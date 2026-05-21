@@ -1,0 +1,16 @@
+{
+  "name": "cleann",
+  "version": "1.0.0",
+  "description": "",
+  "main": "book-groups.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "flag-icons": "^7.5.0"
+  }
+}
