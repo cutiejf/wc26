@@ -1,0 +1,21 @@
+{
+  "name": "Olympic Hockey Guide 2026",
+  "short_name": "OlyHockey26",
+  "start_url": "/?homescreen=1",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "cover.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "cover.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

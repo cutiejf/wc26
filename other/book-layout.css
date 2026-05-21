@@ -1,0 +1,536 @@
+/* 
+ * Book Layout CSS
+ * Simple, clean book layout system
+ */
+
+/* ========================================
+   ROOT VARIABLES & BASE STYLES
+   ======================================== */
+:root {
+  /* Physical dimensions */
+  --panel-width: 4.25in;
+  --panel-height: 5.5in;
+  --spread-padding: 40px;
+  --spine-width: 12px;
+  --spread-scale: 1;
+  
+  /* Typography */
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  
+  /* Colors */
+  --color-text: #2c1e0f;
+  --color-heading: #1a0f00;
+  --color-header: #000000;
+  --color-footer: #333333;
+  --color-page-bg: #ffffff;
+  --color-spine: #f0f0f0;
+  --color-border: #e0e0e0;
+  
+  /* Sizing */
+  --header-height: 48px;
+  --footer-height: 36px;
+  --page-padding: 24px;
+  
+  /* Colors palette */
+  --color-primary: #1a365d;
+  --color-secondary: #2d6a4f;
+  --color-accent: #b32f2f;
+  --color-warning: #d97706;
+  --color-success: #166534;
+  --color-muted: #6b7280;
+  --color-light: #f8fafc;
+}
+
+/* ========================================
+   BOOK SPREAD CONTAINER
+   ======================================== */
+.book-spread {
+  width: calc(var(--panel-width) * 2);
+  height: var(--panel-height);
+  padding: var(--spread-padding);
+  box-sizing: border-box;
+  margin: 24px auto;
+  transform: scale(var(--spread-scale));
+  transform-origin: center;
+  display: flex;
+  background: var(--color-page-bg);
+  color: var(--color-text);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Spine visual element */
+.book-spread::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  bottom: 16px;
+  width: var(--spine-width);
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #f8f8f8, #e8e8e8);
+  border-left: 1px solid #d0d0d0;
+  border-right: 1px solid #d0d0d0;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* ========================================
+   PAGE CLASSES
+   ======================================== */
+.page {
+  width: var(--panel-width);
+  height: var(--panel-height);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  z-index: 30;
+  padding: 0; /* Remove padding from the page itself */
+}
+
+/* Page alignment - NO crazy padding */
+.page.left { text-align: right; }
+.page.right { text-align: left; align-items: flex-start; justify-content: flex-start; }
+
+/* ========================================
+   COVER CLASSES
+   ======================================== */
+.page.cover {
+  /* Front cover - full bleed */
+  padding: 0;
+  background: var(--color-page-bg);
+}
+
+.page.back-cover {
+  /* Back cover - full bleed */
+  padding: 0;
+  background: var(--color-page-bg);
+}
+
+.page.end {
+  /* Final end page */
+  padding: 0;
+  background: var(--color-page-bg);
+}
+
+/* ========================================
+   HEADER CLASSES
+   ======================================== */
+.page-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: var(--color-header);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 60;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Header positioning - full width */
+.page.left .page-header { right: 0; }
+.page.right .page-header { left: 0; }
+
+/* ========================================
+   FOOTER CLASSES
+   ======================================== */
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-height);
+  background: var(--color-footer);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 60;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+/* Footer positioning - full width */
+.page.left .page-footer { right: 0; }
+.page.right .page-footer { left: 0; }
+
+/* Odd/Even footer alignment */
+.page.odd .page-footer { justify-content: flex-start; }
+.page.even .page-footer { justify-content: flex-end; }
+
+/* ========================================
+   PADDING CLASSES
+   ======================================== */
+.page.with-header { padding-top: calc(var(--header-height) + var(--page-padding)); }
+.page.with-footer { padding-bottom: calc(var(--footer-height) + var(--page-padding)); }
+
+/* Ensure content doesn't overlap headers/footers */
+.page-header + .content-area { margin-top: var(--header-height); }
+.content-area + .page-footer { margin-top: 0; }
+
+/* Alternative approach: use padding on the page instead of margin on content */
+.page.with-header.with-footer .content-area {
+  margin-top: var(--header-height);
+  margin-bottom: var(--footer-height);
+}
+.page.with-header:not(.with-footer) .content-area {
+  margin-top: var(--header-height);
+}
+.page.with-footer:not(.with-header) .content-area {
+  margin-bottom: var(--footer-height);
+}
+
+.page.no-header { padding-top: var(--page-padding); }
+.page.no-footer { padding-bottom: var(--page-padding); }
+
+.page.no-header-footer {
+  padding-top: var(--page-padding);
+  padding-bottom: var(--page-padding);
+}
+
+.page.no-footer-with-header {
+  padding-top: calc(var(--header-height) + var(--page-padding));
+  padding-bottom: var(--page-padding);
+}
+
+.page.full-image {
+  padding: 0;
+}
+
+.page.padded-image {
+  padding: var(--page-padding);
+}
+
+/* ========================================
+   TYPOGRAPHY CLASSES
+   ======================================== */
+
+/* Titles */
+.title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  color: var(--color-heading);
+  margin: 0 0 10px 0;
+}
+
+.subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--color-heading);
+  margin: 0 0 8px 0;
+}
+
+/* Body text */
+.body {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0 0 16px 0;
+}
+
+/* Numbers and stats */
+.nums {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-heading);
+}
+
+/* ========================================
+   TEXT STYLING CLASSES
+   ======================================== */
+
+/* Bold and strong */
+.bold, .strong {
+  font-weight: 700;
+}
+
+/* Emphasis */
+.emphasis {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+/* Monospace */
+.code, .mono {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  background: #f8f8f8;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+}
+
+/* ========================================
+   COLOR CLASSES
+   ======================================== */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-accent { color: var(--color-accent); }
+.text-warning { color: var(--color-warning); }
+.text-success { color: var(--color-success); }
+.text-muted { color: var(--color-muted); }
+.text-light { color: var(--color-light); }
+.text-dark { color: var(--color-heading); }
+
+/* Background colors */
+.bg-primary { background-color: var(--color-primary); }
+.bg-secondary { background-color: var(--color-secondary); }
+.bg-accent { background-color: var(--color-accent); }
+.bg-warning { background-color: var(--color-warning); }
+.bg-success { background-color: var(--color-success); }
+.bg-muted { background-color: var(--color-muted); }
+.bg-light { background-color: var(--color-light); }
+.bg-dark { background-color: var(--color-heading); }
+
+/* ========================================
+   ODD/EVEN CLASSES
+   ======================================== */
+.page.odd {
+  /* Odd page specific styles */
+  border-right: 1px solid var(--color-border);
+}
+
+.page.even {
+  /* Even page specific styles */
+  border-left: 1px solid var(--color-border);
+}
+
+/* ========================================
+   LAYOUT UTILITIES
+   ======================================== */
+
+/* Spacing helpers */
+.spacer-small { height: 8px; }
+.spacer-medium { height: 16px; }
+.spacer-large { height: 24px; }
+.spacer-xlarge { height: 32px; }
+
+/* Content containers */
+.content-area {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Image containers */
+.image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========================================
+   RESPONSIVE STYLES
+   ======================================== */
+@media (max-width: 1024px) {
+  .book-spread {
+    --spread-scale: 0.85;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-spread {
+    --spread-scale: 0.65;
+    width: 100vw;
+    height: auto;
+    transform-origin: top center;
+    overflow-y: auto;
+    box-shadow: none;
+  }
+  
+  .book-spread::after {
+    display: none; /* Hide spine on mobile */
+  }
+  
+  .page {
+    width: 100%;
+    height: auto;
+  }
+  
+  .page-header, .page-footer {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+  }
+  
+  .page-header { border-bottom: 2px solid rgba(255, 255, 255, 0.2); }
+  .page-footer { border-top: 2px solid rgba(255, 255, 255, 0.2); }
+}
+
+@media (max-width: 480px) {
+  .book-spread {
+    --spread-scale: 0.55;
+    padding: 16px;
+  }
+  
+  .title { font-size: 28px; }
+  .subtitle { font-size: 20px; }
+  .body { font-size: 16px; }
+  .nums { font-size: 18px; }
+}
+
+/* ========================================
+   EXAMPLE PAGE NUMBERS
+   ======================================== */
+.page-number {
+  display: none; /* Hide page numbers as requested */
+}
+
+/* ========================================
+   CLEARFIX
+   ======================================== */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* ========================================
+   VISUALLY HIDDEN
+   ======================================== */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* ========================================
+   EXAMPLE CLASSES FOR COMMON LAYOUTS
+   ======================================== */
+
+/* Standings layout (left page) */
+.standings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.standing-row {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+.standing-row:last-child {
+  border-bottom: none;
+}
+
+.team-name {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: left;
+  margin-right: 16px;
+}
+
+.team-abbrev {
+  font-size: 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+/* Scoreboard layout (right page) */
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  padding: 80px 0;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.team-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.score {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 72px;
+}
+
+.score.home { color: var(--color-accent); }
+.score.away { color: var(--color-secondary); }
+
+.clock {
+  margin-top: 32px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Flags */
+.flag {
+  width: 36px;
+  height: 24px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  display: inline-block;
+}
+
+.flag-group {
+  position: relative;
+}
+
+.flag-group .flag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+/* ========================================
+   END OF BOOK LAYOUT CSS
+   ======================================== */

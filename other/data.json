@@ -1,0 +1,575 @@
+{
+  "storedScores": {
+    "p1-h": "4",
+    "p1-a": "1",
+    {}
+        "points": "9"
+      },
+      {
+        "name": "4. Martin Necas",
+        "team": "CZE",
+        "gp": "5",
+        "goals": "3",
+        "assists": "5",
+        "points": "8"
+      },
+      {
+        "name": "5. Juraj Slafkovsky",
+        "team": "SVK",
+        "gp": "4",
+        "goals": "3",
+        "assists": "4",
+        "points": "7"
+      },
+      {
+        "name": "6. Timo Meier",
+        "team": "SWI",
+        "gp": "5",
+        "goals": "3",
+        "assists": "4",
+        "points": "7"
+      },
+      {
+        "name": "7. Leon Draisaitl",
+        "team": "GER",
+        "gp": "5",
+        "goals": "2",
+        "assists": "5",
+        "points": "7"
+      },
+      {
+        "name": "8. Tim Stutzle",
+        "team": "GER",
+        "gp": "5",
+        "goals": "4",
+        "assists": "2",
+        "points": "6"
+      },
+      {
+        "name": "T9. Dalibor Dvorsky",
+        "team": "SVK",
+        "gp": "4",
+        "goals": "3",
+        "assists": "3",
+        "points": "6"
+      },
+      {
+        "name": "T9. Nathan MacKinnon",
+        "team": "CAN",
+        "gp": "4",
+        "goals": "3",
+        "assists": "3",
+        "points": "6"
+      },
+      {
+        "name": "T9. Auston Matthews",
+        "team": "USA",
+        "gp": "4",
+        "goals": "3",
+        "assists": "3",
+        "points": "6"
+      }
+    ],
+    "goalies": [
+      {
+        "rank": "1.",
+        "name": "Connor Hellebuyck",
+        "team": "USA",
+        "gp": "3",
+        "wins": "3",
+        "gaa": "0.98",
+        "svp": ".958"
+      },
+      {
+        "rank": "2.",
+        "name": "Leonardo Genoni",
+        "team": "SWI",
+        "gp": "4",
+        "wins": "3",
+        "gaa": "1.47",
+        "svp": ".946"
+      },
+      {
+        "rank": "3.",
+        "name": "Juuse Saros",
+        "team": "FIN",
+        "gp": "4",
+        "wins": "3",
+        "gaa": "1.49",
+        "svp": ".938"
+      },
+      {
+        "rank": "4.",
+        "name": "Jacob Markstrom",
+        "team": "SWE",
+        "gp": "3",
+        "wins": "2",
+        "gaa": "1.97",
+        "svp": ".935"
+      },
+      {
+        "rank": "5.",
+        "name": "Samuel Hlavaj",
+        "team": "SVK",
+        "gp": "3",
+        "wins": "2",
+        "gaa": "2.67",
+        "svp": ".932"
+      },
+      {
+        "rank": "6.",
+        "name": "Jordan Binnington",
+        "team": "CAN",
+        "gp": "3",
+        "wins": "3",
+        "gaa": "1.65",
+        "svp": ".922"
+      },
+      {
+        "rank": "7.",
+        "name": "Frederik Andersen",
+        "team": "DEN",
+        "gp": "3",
+        "wins": "1",
+        "gaa": "2.75",
+        "svp": ".913"
+      },
+      {
+        "rank": "8.",
+        "name": "Philipp Grubauer",
+        "team": "GER",
+        "gp": "4",
+        "wins": "2",
+        "gaa": "2.79",
+        "svp": ".912"
+      },
+      {
+        "rank": "9.",
+        "name": "Damian Clara",
+        "team": "ITA",
+        "gp": "4",
+        "wins": "0",
+        "gaa": "5.13",
+        "svp": ".911"
+      },
+      {
+        "rank": "10.",
+        "name": "Filip Gustavsson",
+        "team": "SWE",
+        "gp": "2",
+        "wins": "1",
+        "gaa": "2.5",
+        "svp": ".889"
+      }
+    ],
+    "lastFetch": "2026-02-20T16:16:24.585Z"
+  },
+  "prelims": [
+    {
+      "id": "p1",
+      "g": "B",
+      "d": "Wed Feb 11",
+      "t": "10:40a",
+      "h": "Slovakia",
+      "a": "Finland",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p2",
+      "g": "B",
+      "d": "Wed Feb 11",
+      "t": "03:10p",
+      "h": "Sweden",
+      "a": "Italy",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p3",
+      "g": "A",
+      "d": "Thu Feb 12",
+      "t": "06:10a",
+      "h": "Switzerland",
+      "a": "France",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p4",
+      "g": "A",
+      "d": "Thu Feb 12",
+      "t": "10:40a",
+      "h": "Czechia",
+      "a": "Canada",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p5",
+      "g": "C",
+      "d": "Thu Feb 12",
+      "t": "03:10p",
+      "h": "Latvia",
+      "a": "USA",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p6",
+      "g": "C",
+      "d": "Thu Feb 12",
+      "t": "03:10p",
+      "h": "Germany",
+      "a": "Denmark",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p7",
+      "g": "B",
+      "d": "Fri Feb 13",
+      "t": "06:10a",
+      "h": "Finland",
+      "a": "Sweden",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p8",
+      "g": "B",
+      "d": "Fri Feb 13",
+      "t": "06:10a",
+      "h": "Italy",
+      "a": "Slovakia",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p9",
+      "g": "A",
+      "d": "Fri Feb 13",
+      "t": "10:40a",
+      "h": "France",
+      "a": "Czechia",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p10",
+      "g": "A",
+      "d": "Fri Feb 13",
+      "t": "03:10p",
+      "h": "Canada",
+      "a": "Switzerland",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p11",
+      "g": "B",
+      "d": "Sat Feb 14",
+      "t": "06:10a",
+      "h": "Sweden",
+      "a": "Slovakia",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p12",
+      "g": "C",
+      "d": "Sat Feb 14",
+      "t": "06:10a",
+      "h": "Germany",
+      "a": "Latvia",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p13",
+      "g": "B",
+      "d": "Sat Feb 14",
+      "t": "10:40a",
+      "h": "Finland",
+      "a": "Italy",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "p14",
+      "g": "C",
+      "d": "Sat Feb 14",
+      "t": "03:10p",
+      "h": "USA",
+      "a": "Denmark",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "p15",
+      "g": "A",
+      "d": "Sun Feb 15",
+      "t": "06:10a",
+      "h": "Switzerland",
+      "a": "Czechia",
+      "v": "S"
+    },
+    {
+      "id": "p16",
+      "g": "A",
+      "d": "Sun Feb 15",
+      "t": "10:40a",
+      "h": "Canada",
+      "a": "France",
+      "v": "R"
+    },
+    {
+      "id": "p17",
+      "g": "C",
+      "d": "Sun Feb 15",
+      "t": "01:10p",
+      "h": "Denmark",
+      "a": "Latvia",
+      "v": "R"
+    },
+    {
+      "id": "p18",
+      "g": "C",
+      "d": "Sun Feb 15",
+      "t": "03:10p",
+      "h": "USA",
+      "a": "Germany",
+      "v": "S",
+      "status": "F"
+    }
+  ],
+  "knockouts": [
+    {
+      "header": "QUALIFICATION ROUND"
+    },
+    {
+      "id": "k1",
+      "g": "Q",
+      "d": "Tue Feb 17",
+      "t": "06:10a",
+      "h": "Germany",
+      "a": "France",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "k2",
+      "g": "Q",
+      "d": "Tue Feb 17",
+      "t": "06:10a",
+      "h": "Switzerland",
+      "a": "Italy",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "k3",
+      "g": "Q",
+      "d": "Tue Feb 17",
+      "t": "12:10p",
+      "h": "Sweden",
+      "a": "Latvia",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "k4",
+      "g": "Q",
+      "d": "Tue Feb 17",
+      "t": "03:10p",
+      "h": "Czechia",
+      "a": "Denmark",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "header": "QUARTERFINALS"
+    },
+    {
+      "id": "k5",
+      "g": "QF",
+      "d": "Wed Feb 18",
+      "t": "10:40a",
+      "h": "Canada",
+      "a": "Czechia",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "k6",
+      "g": "QF",
+      "d": "Wed Feb 18",
+      "t": "10:40a",
+      "h": "USA",
+      "a": "Sweden",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "id": "k7",
+      "g": "QF",
+      "d": "Wed Feb 18",
+      "t": "03:10p",
+      "h": "Slovakia",
+      "a": "Germany",
+      "v": "S",
+      "status": "F"
+    },
+    {
+      "id": "k8",
+      "g": "QF",
+      "d": "Wed Feb 18",
+      "t": "03:10p",
+      "h": "Finland",
+      "a": "Switzerland",
+      "v": "R",
+      "status": "F"
+    },
+    {
+      "header": "SEMIFINALS"
+    },
+    {
+      "id": "k9",
+      "g": "SF",
+      "d": "Fri Feb 20",
+      "t": "10:40a",
+      "h": "Canada",
+      "a": "Finland",
+      "v": "S"
+    },
+    {
+      "id": "k10",
+      "g": "SF",
+      "d": "Fri Feb 20",
+      "t": "03:10p",
+      "h": "USA",
+      "a": "Slovakia",
+      "v": "S"
+    },
+    {
+      "header": "MEDAL GAMES"
+    },
+    {
+      "id": "k11",
+      "g": "🥉",
+      "d": "Sat Feb 21",
+      "t": "02:40p",
+      "h": "Lose SF2",
+      "a": "Finland",
+      "v": "S"
+    },
+    {
+      "id": "k12",
+      "g": "🥇🥈",
+      "d": "Sun Feb 22",
+      "t": "08:10a",
+      "h": "Canada",
+      "a": "Win SF2",
+      "v": "S"
+    }
+  ],
+  "historyData": [
+    [
+      "2022",
+      "fi",
+      "FIN",
+      "ru",
+      "ROC",
+      "sk",
+      "SVK"
+    ],
+    [
+      "2018",
+      "ru",
+      "OAR",
+      "de",
+      "GER",
+      "ca",
+      "CAN"
+    ],
+    [
+      "2014",
+      "ca",
+      "CAN",
+      "se",
+      "SWE",
+      "fi",
+      "FIN"
+    ],
+    [
+      "2010",
+      "ca",
+      "CAN",
+      "us",
+      "USA",
+      "fi",
+      "FIN"
+    ],
+    [
+      "2006",
+      "se",
+      "SWE",
+      "fi",
+      "FIN",
+      "cz",
+      "CZE"
+    ],
+    [
+      "2002",
+      "ca",
+      "CAN",
+      "us",
+      "USA",
+      "ru",
+      "RUS"
+    ],
+    [
+      "1998",
+      "cz",
+      "CZE",
+      "ru",
+      "RUS",
+      "fi",
+      "FIN"
+    ]
+  ],
+  "teamGroups": {
+    "Canada": "A",
+    "Czechia": "A",
+    "Switzerland": "A",
+    "France": "A",
+    "Finland": "B",
+    "Sweden": "B",
+    "Slovakia": "B",
+    "Italy": "B",
+    "USA": "C",
+    "Germany": "C",
+    "Latvia": "C",
+    "Denmark": "C"
+  },
+  "flagMap": {
+    "Canada": "ca",
+    "Czechia": "cz",
+    "Switzerland": "ch",
+    "France": "fr",
+    "Finland": "fi",
+    "Sweden": "se",
+    "Slovakia": "sk",
+    "Italy": "it",
+    "USA": "us",
+    "Germany": "de",
+    "Latvia": "lv",
+    "Denmark": "dk"
+  },
+  "lastUpdate": "2026-02-20T16:16:25.116Z",
+  "storedIIHFScores": {
+    "players": [],
+    "teams": [],
+    "fetched": "2026-02-20T16:16:25.115Z"
+  }
+}

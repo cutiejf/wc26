@@ -1,0 +1,387 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page Manager</title>
+  <style>
+    :root {
+      --scale: 0.175;
+      --bg:    #141416;
+      --bg2:   #1c1c20;
+      --bg3:   #232328;
+      --line:  #2e2e36;
+      --txt:   #d8d8e0;
+      --mute:  #666;
+      --acc:   #4a7fd4;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: system-ui, 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--txt); min-height: 100vh; }
+    header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 18px; background: var(--bg2);
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 100;
+    }
+    header strong { color: #fff; font-size: 14px; letter-spacing: 0.03em; }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      padding: 6px 13px; border: 1px solid #404048; background: var(--bg3);
+      color: var(--txt); border-radius: 5px; cursor: pointer; font-size: 12px;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    button:hover { background: #2e2e3a; border-color: #666; }
+    button.primary { background: #1a3a6a; border-color: var(--acc); color: #9ecbff; }
+    button.primary:hover { background: #1e4080; }
+    #status { padding: 10px 18px; font-size: 12px; color: var(--mute); border-bottom: 1px solid var(--line); min-height: 34px; }
+    #status code { background: #222; padding: 1px 5px; border-radius: 3px; font-size: 11px; color: #8ac; }
+    main { padding: 16px 18px; }
+    .grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .spread-divider {
+      flex-basis: 100%; display: flex; align-items: center; gap: 10px;
+      font-size: 10px; color: #3a3a48; margin: 6px 0 0; text-transform: uppercase; letter-spacing: .06em;
+    }
+    .spread-divider::before, .spread-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+    .card {
+      background: var(--bg2); border: 1px solid var(--line);
+      border-radius: 7px; overflow: hidden; cursor: pointer;
+      display: flex; flex-direction: column;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover { border-color: #556; box-shadow: 0 4px 18px rgba(0,0,0,.5); }
+    .card.blank { opacity: 0.22; pointer-events: none; }
+    .face-wrap {
+      width:  calc(4.25in * var(--scale));
+      height: calc(5.5in  * var(--scale));
+      overflow: hidden; flex-shrink: 0; background: #fff; position: relative;
+    }
+    .face-wrap iframe {
+      border: 0; display: block; pointer-events: none;
+      width: 4.25in; height: 5.5in;
+      transform-origin: top left; transform: scale(var(--scale));
+    }
+    .card-meta {
+      padding: 5px 8px; font-size: 11px; color: var(--mute);
+      background: var(--bg2); display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-meta .pg { color: #ccc; font-weight: 700; font-size: 12px; }
+    .side-badge { font-size: 9px; padding: 1px 5px; border-radius: 3px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+    .side-badge.left  { background: #1a2a40; color: #6aa0d8; }
+    .side-badge.right { background: #2a1a40; color: #a07ae8; }
+    .modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,.85);
+      display: none; align-items: center; justify-content: center; z-index: 9999;
+    }
+    .modal-inner {
+      background: var(--bg2); width: 96vw; max-width: 1060px; max-height: 94vh;
+      overflow-y: auto; border-radius: 10px; padding: 16px; border: 1px solid #3a3a48;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .modal-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .modal-bar h3 { margin: 0; color: #eee; font-size: 13px; }
+    .modal-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+    .modal-spread { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .modal-panel { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .modal-panel iframe { width: 4.25in; height: 5.5in; border: 1px solid #333; border-radius: 3px; display: block; }
+    .modal-lbl { font-size: 11px; color: var(--mute); }
+    .modal-code { display: flex; gap: 10px; }
+    .modal-code > div { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .modal-code label { font-size: 10px; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
+    .modal-code textarea { flex: 1; background: #0d0d10; color: #bbb; border: 1px solid #333; border-radius: 4px; font-size: 11px; font-family: monospace; padding: 6px; resize: vertical; min-height: 90px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <strong>&#128210; Page Manager</strong>
+  <div class="controls">
+    <button class="primary" id="import-btn">&#8615; Import flipbook-test.html</button>
+    <button id="export-all-btn">Export All Pages (PDF)</button>
+  </div>
+</header>
+
+<div id="status">Start server: <code>npx serve d:\cleann</code> then click Import.</div>
+
+<main><div id="grid" class="grid"></div></main>
+
+<div id="modal" class="modal">
+  <div class="modal-inner">
+    <div class="modal-bar">
+      <h3 id="modal-title">—</h3>
+      <div class="modal-btns">
+        <button id="exp-left">Export Left</button>
+        <button id="exp-right">Export Right</button>
+        <button id="exp-both">Export Spread</button>
+        <button id="exp-dual">Dual View</button>
+        <button id="modal-close">&#10005;</button>
+      </div>
+    </div>
+    <div class="modal-spread">
+      <div class="modal-panel">
+        <iframe id="mfr-left"  sandbox="allow-same-origin allow-scripts"></iframe>
+        <div class="modal-lbl" id="ml-left">—</div>
+      </div>
+      <div class="modal-panel">
+        <iframe id="mfr-right" sandbox="allow-same-origin allow-scripts"></iframe>
+        <div class="modal-lbl" id="ml-right">—</div>
+      </div>
+    </div>
+    <div class="modal-code">
+      <div><label>Left HTML</label><textarea id="ta-left"  readonly></textarea></div>
+      <div><label>Right HTML</label><textarea id="ta-right" readonly></textarea></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SOURCE   = './flipbook-test.html';
+  const CSS_LIST = ['./flipbook.css', './book-example.css'];
+  const BASE_URL = location.origin + '/';
+
+  let panels   = [];
+  let cssBlob  = '';
+  let jsBlob   = '';
+  let activeIdx = -1;
+
+  const PAGE_OVERRIDES =
+    '.front,.back{' +
+    'width:4.25in!important;height:5.5in!important;position:absolute!important;top:0!important;left:0!important;' +
+    'translate:none!important;rotate:none!important;transform:none!important;' +
+    'backface-visibility:visible!important;-webkit-backface-visibility:visible!important}';
+
+  function makeDoc(inner) {
+    return '<!doctype html><html><head><meta charset="utf-8"><base href="' + BASE_URL + '">' +
+      '<style>*{box-sizing:border-box}body{margin:0;background:#fff;overflow:hidden}' +
+      '.page-panel{width:4.25in;height:5.5in;overflow:hidden;position:relative}\n' +
+      cssBlob + '\n' + PAGE_OVERRIDES +
+      '</style>' +
+      '<scr'+'ipt>'+jsBlob+'<\/scr'+'ipt>' +
+      '</head><body><div class="page-panel">' + inner + '</div></body></html>';
+  }
+
+  function loadFrame(iframe, html) {
+    iframe.srcdoc = html ? makeDoc(html) : '<!doctype html><html><body style="margin:0;background:#f5f5f5"></body></html>';
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    for (let i = 0; i < panels.length; i += 2) {
+      const L = panels[i];
+      const R = panels[i + 1];
+      if (i > 0) {
+        const divEl = document.createElement('div');
+        divEl.className = 'spread-divider';
+        const sn = i / 2;
+        const isLast = i >= panels.length - 2;
+        divEl.textContent = sn === 0 ? '' : isLast ? 'Back Cover' : 'Spread ' + sn;
+        grid.appendChild(divEl);
+      }
+      [L, R].forEach(p => {
+        if (!p) return;
+        const card = document.createElement('div');
+        card.className = 'card' + (p.blank ? ' blank' : '');
+        const wrap = document.createElement('div'); wrap.className = 'face-wrap';
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts');
+        wrap.appendChild(iframe);
+        const meta = document.createElement('div'); meta.className = 'card-meta';
+        meta.innerHTML = '<span class="pg">' + p.label + '</span><span class="side-badge ' + p.side + '">' + p.side + '</span>';
+        card.appendChild(wrap); card.appendChild(meta);
+        if (!p.blank) {
+          const pi = panels.indexOf(p);
+          card.addEventListener('click', function() { openModal(pi); });
+          loadFrame(iframe, p.html);
+        }
+        grid.appendChild(card);
+      });
+    }
+  }
+
+  async function doImport() {
+    const st = document.getElementById('status');
+    st.textContent = 'Fetching CSS…';
+    try {
+      const [cssTexts, jsText] = await Promise.all([
+        Promise.all(CSS_LIST.map(f => fetch(f).then(r => r.ok ? r.text() : '').catch(() => ''))),
+        fetch('./book-groups.js').then(r => r.ok ? r.text() : '').catch(() => '')
+      ]);
+      cssBlob = cssTexts.join('\n');
+      jsBlob  = jsText;
+      st.textContent = 'Fetching source…';
+      const resp = await fetch(SOURCE);
+      if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — run: npx serve d:/cleann');
+      const txt = await resp.text();
+      const doc = new DOMParser().parseFromString(txt, 'text/html');
+      doc.querySelectorAll('style').forEach(s => { cssBlob += '\n' + s.textContent; });
+
+      const pageEls  = [...doc.querySelectorAll('.page')];
+      const total    = pageEls.length;
+      const rawSheets = pageEls.map((el, si) => {
+        const rEl = el.querySelector('.front'); // .front = RIGHT page
+        const lEl = el.querySelector('.back');  // .back  = LEFT page
+        const rN  = rEl && rEl.querySelector('.pg-num') ? rEl.querySelector('.pg-num').textContent.trim() : '';
+        const lN  = lEl && lEl.querySelector('.pg-num') ? lEl.querySelector('.pg-num').textContent.trim() : '';
+        return {
+          si,
+          rightLabel: si === 0           ? 'Cover'      : rN ? 'p' + rN : 'right-' + si,
+          leftLabel:  si === total - 1   ? 'Back Cover' : lN ? 'p' + lN : 'left-'  + si,
+          rightHTML:  rEl ? '<div id="pg-' + si + '">' + rEl.outerHTML + '</div>' : '',
+          leftHTML:   lEl ? '<div id="pg-' + si + '">' + lEl.outerHTML + '</div>' : '',
+        };
+      });
+
+      // Build flat panel list in reading order (pairs = spreads):
+      // [00, Cover], [p1, p2], [p3, p4], ..., [p35, p36], [BackCover, --]
+      panels = [];
+      panels.push({ label: '00',    side: 'left',  html: '',                       blank: true });  // slot 00
+      panels.push({ label: 'Cover', side: 'right', html: rawSheets[0].rightHTML                });  // cover
+
+      for (let si = 0; si < rawSheets.length; si++) {
+        const sh = rawSheets[si];
+        // left page of this sheet
+        panels.push({ label: sh.leftLabel, side: 'left', html: sh.leftHTML,
+                       blank: si === total - 1 ? false : false });
+        // right page of NEXT sheet (sheet si+1's .front)
+        if (si < rawSheets.length - 1) {
+          const nxt = rawSheets[si + 1];
+          panels.push({ label: nxt.rightLabel, side: 'right', html: nxt.rightHTML });
+        }
+      }
+      // trailing blank right after back cover
+      panels.push({ label: '\u2014', side: 'right', html: '', blank: true });
+
+      renderGrid();
+      st.textContent = '&#10003; ' + rawSheets.length + ' sheets — ' + panels.filter(p => !p.blank).length + ' panels loaded';
+    } catch (err) {
+      document.getElementById('status').textContent = '✗ ' + err.message;
+    }
+  }
+
+  function openPrint(bodyHTML, pgSize) {
+    const w = window.open('', '_blank');
+    if (!w) { alert('Allow popups for this page.'); return; }
+    const d = '<!doctype html><html><head><meta charset="utf-8"><base href="' + BASE_URL + '">' +
+      '<style>*{box-sizing:border-box}body{margin:0;background:#fff}' +
+      '.page-panel{width:4.25in;height:5.5in;overflow:hidden;position:relative}' +
+      '@page{size:' + pgSize + ';margin:0}@media print{body{margin:0}}\n' +
+      cssBlob + '\n' + PAGE_OVERRIDES +
+      '</style><scr'+'ipt>'+jsBlob+'<\/scr'+'ipt>' +
+      '</head><body>' + bodyHTML +
+      '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},600);}<\/scr'+'ipt></body></html>';
+    w.document.open(); w.document.write(d); w.document.close();
+  }
+
+  function exportAll() {
+    if (!panels.length) { alert('Import first.'); return; }
+    const w = window.open('', '_blank');
+    if (!w) { alert('Allow popups for this page.'); return; }
+
+    // Build spread rows: each = one left panel + one right panel, 8.5×5.5in
+    const spreads = [];
+    for (let i = 0; i < panels.length; i += 2) {
+      const L = panels[i]   || { html: '', blank: true };
+      const R = panels[i+1] || { html: '', blank: true };
+      const lPanel = L.blank ? '<div class="sp-panel sp-blank"></div>' : '<div class="sp-panel">' + L.html + '</div>';
+      const rPanel = R.blank ? '<div class="sp-panel sp-blank"></div>' : '<div class="sp-panel">' + R.html + '</div>';
+      spreads.push('<div class="spread">' + lPanel + rPanel + '</div>');
+    }
+
+    // Group into pairs of 2 spreads per printed page (8.5×11in = 2 × 8.5×5.5in)
+    const pages = [];
+    for (let i = 0; i < spreads.length; i += 2) {
+      const pair = spreads.slice(i, i + 2).join('');
+      pages.push('<div class="print-page">' + pair + '</div>');
+    }
+
+    const d = '<!doctype html><html><head><meta charset="utf-8"><base href="' + BASE_URL + '">' +
+      '<style>*{box-sizing:border-box}' +
+      'html,body{margin:0;padding:0;background:#0f0f12;overflow-y:auto}' +
+      '@page{size:8.5in 11in;margin:0}' +
+      '@media print{html,body{background:#fff}' +
+        '.print-page{page-break-after:always;break-after:page}}' +
+      '.print-page{width:8.5in;height:11in;display:flex;flex-direction:column;overflow:hidden;margin:0 auto 32px}' +
+      '@media print{.print-page{margin:0}}' +
+      '.spread{display:flex;width:8.5in;height:5.5in;flex-shrink:0}' +
+      '.sp-panel{width:4.25in;height:5.5in;overflow:hidden;position:relative;background:#fff;flex-shrink:0}' +
+      '.sp-blank{background:transparent!important}' +
+      '\n' + cssBlob + '\n' + PAGE_OVERRIDES +
+      '</style><scr'+'ipt>'+jsBlob+'<'+'/scr'+'ipt>' +
+      '</head><body>' + pages.join('\n') +
+      '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.print();},800);}<'+'/scr'+'ipt>' +
+      '</body></html>';
+    w.document.open(); w.document.write(d); w.document.close();
+  }
+
+  function getPair(idx) {
+    const isLeft = panels[idx].side === 'left';
+    const otherIdx = idx % 2 === 0 ? idx + 1 : idx - 1;
+    const L = isLeft  ? panels[idx] : (panels[otherIdx] || {html:'',label:'',blank:true});
+    const R = !isLeft ? panels[idx] : (panels[otherIdx] || {html:'',label:'',blank:true});
+    return { L, R };
+  }
+
+  const modal   = document.getElementById('modal');
+  const mTitle  = document.getElementById('modal-title');
+  const mfrLeft = document.getElementById('mfr-left');
+  const mfrRight= document.getElementById('mfr-right');
+  const mlLeft  = document.getElementById('ml-left');
+  const mlRight = document.getElementById('ml-right');
+  const taLeft  = document.getElementById('ta-left');
+  const taRight = document.getElementById('ta-right');
+
+  function openModal(idx) {
+    activeIdx = idx;
+    const { L, R } = getPair(idx);
+    mTitle.textContent = (L.label || '—') + '  /  ' + (R.label || '—');
+    mlLeft.textContent  = L.label || '—';
+    mlRight.textContent = R.label || '—';
+    loadFrame(mfrLeft,  L.html || '');
+    loadFrame(mfrRight, R.html || '');
+    taLeft.value  = L.html || '';
+    taRight.value = R.html || '';
+    modal.style.display = 'flex';
+  }
+
+  document.getElementById('modal-close').addEventListener('click', function() { modal.style.display = 'none'; });
+  modal.addEventListener('click', function(e) { if (e.target === modal) modal.style.display = 'none'; });
+
+  document.getElementById('exp-left').addEventListener('click', function() {
+    if (activeIdx < 0) return;
+    const { L } = getPair(activeIdx);
+    if (L && !L.blank) openPrint('<div class="page-panel">' + L.html + '</div>', '4.25in 5.5in');
+  });
+  document.getElementById('exp-right').addEventListener('click', function() {
+    if (activeIdx < 0) return;
+    const { R } = getPair(activeIdx);
+    if (R && !R.blank) openPrint('<div class="page-panel">' + R.html + '</div>', '4.25in 5.5in');
+  });
+  document.getElementById('exp-both').addEventListener('click', function() {
+    if (activeIdx < 0) return;
+    const { L, R } = getPair(activeIdx);
+    openPrint('<div style="display:flex"><div class="page-panel">' + (L.html||'') +
+      '</div><div class="page-panel" style="border-left:1px solid #ddd">' + (R.html||'') + '</div></div>', '8.5in 5.5in');
+  });
+  document.getElementById('exp-dual').addEventListener('click', function() {
+    if (activeIdx < 0) return;
+    const { L, R } = getPair(activeIdx);
+    const w = window.open('', '_blank');
+    if (!w) { alert('Allow popups.'); return; }
+    const d = '<!doctype html><html><head><meta charset="utf-8"><base href="' + BASE_URL + '">' +
+      '<style>*{box-sizing:border-box}body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#0f0f12;gap:24px;flex-wrap:nowrap;padding:24px;overflow:auto}' +
+      '.wrap{display:flex;flex-direction:column;align-items:center;gap:8px}.lbl{color:#666;font-family:system-ui;font-size:12px;letter-spacing:.05em}' +
+      '.page-panel{width:4.25in;height:5.5in;overflow:hidden;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.7)}\n' +
+      cssBlob + '\n' + PAGE_OVERRIDES +
+      '</style><scr'+'ipt>'+jsBlob+'<\/scr'+'ipt>' +
+      '</head><body>' +
+      '<div class="wrap"><div class="page-panel">' + (L.html||'') + '</div><div class="lbl">' + (L.label||'') + '</div></div>' +
+      '<div class="wrap"><div class="page-panel">' + (R.html||'') + '</div><div class="lbl">' + (R.label||'') + '</div></div>' +
+      '</body></html>';
+    w.document.open(); w.document.write(d); w.document.close();
+  });
+
+  document.getElementById('import-btn').addEventListener('click', doImport);
+  document.getElementById('export-all-btn').addEventListener('click', exportAll);
+</script>
+</body>
+</html>

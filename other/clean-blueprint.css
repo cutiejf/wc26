@@ -1,0 +1,289 @@
+/*
+  clean-blueprint.css
+
+  A minimal, opinionated CSS "blueprint" for a two-page spread system.
+  - Clear sections with short explanations
+  - CSS variables for easy scaling
+  - Simple classes for teams, flags and scoreboard
+  - Transform-based scaling examples for desktop / mobile
+
+  Usage: wrap a spread in <div class="book-spread"> with two children
+    <div class="page left">...</div>
+    <div class="page right">...</div>
+
+  Tweak scale by changing --spread-scale or via media queries.
+*/
+
+:root{
+   /* Physical panel sizing (primary source of truth) */
+   --panel-width: 4.25in;   /* single panel width */
+   --panel-height: 5.5in;   /* single panel height */
+   --spread-padding: 40px;  /* inner padding */
+   --spread-scale: 1;       /* multiply to bump whole layout (1.1 = +10%) */
+   --header-height: 40px;   /* thinner header */
+   --header-vertical-padding: 8px;
+   --spine-width: 8px;
+
+   /* Derive spread size from panel dimensions (two panels side-by-side) */
+   --spread-width: calc(var(--panel-width) * 2);
+   --spread-height: var(--panel-height);
+
+   /* typography */
+   --font-family-sans: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+   --font-family-serif: Georgia, "Times New Roman", serif;
+   --color-text: #2c1e0f;
+   --color-heading: #1a0f00;
+   --color-home: #c43b3b;   /* red */
+   --color-away: #1b4fb3;   /* blue */
+}
+
+/* -------------------------
+   Base spread container
+   - Centers a fixed-size spread and applies global scale
+   - Keep contents inside two .page columns
+   ------------------------- */
+.book-spread{
+  width: var(--spread-width);
+  height: var(--spread-height);
+  padding: var(--spread-padding);
+  box-sizing: border-box;
+  margin: 24px auto;
+  transform: scale(var(--spread-scale));
+  transform-origin: center;
+  background: #fff;
+  color: var(--color-text);
+  display: flex; /* left + right pages */
+  gap: 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.book-spread{
+   position: relative;
+}
+
+/* Keep a responsive fallback: never overflow the viewport */
+.book-spread { max-width: 100vw; max-height: 100vh; }
+
+/* -------------------------
+   Pages: left / right
+   - Each page is 50% of spread width
+   - Left page often holds standings (right-aligned)
+   - Right page holds scoreboard / layout (centered)
+   ------------------------- */
+.book-spread .page{
+   width: var(--panel-width);
+   height: var(--panel-height);
+   box-sizing: border-box;
+   padding: 0 12px 12px 12px;
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   overflow: hidden;
+}
+.book-spread::after{
+   content: '';
+   position: absolute;
+   left: 50%;
+   top: 12px;
+   bottom: 12px;
+   width: 8px; /* thinner spine */
+   transform: translateX(-50%);
+   background: linear-gradient(180deg,#efefef,#fafafa);
+   border-left:1px solid #e6e6e6;
+   border-right:1px solid #e6e6e6;
+   box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+   z-index: 20;
+   pointer-events: none;
+}
+
+/* pages above spine */
+.book-spread .page{ z-index: 30 }
+
+/* header/footer rules */
+.page > h1, .page > h2, .page > h3, .page > .hdr{
+   position:absolute; top:0; margin:0; z-index:60;
+   background: #111; color:#fff; padding:var(--header-vertical-padding) 16px; border-bottom:1px solid rgba(255,255,255,0.03);
+   height:var(--header-height); display:flex; align-items:center; gap:8px;
+   box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+   font-family: var(--font-family-sans); font-size:16px; box-sizing:border-box;
+}
+/* avoid overlapping the spine */
+.page.left > .hdr, .page.left > h1, .page.left > h2, .page.left > h3 { left:0; right: calc(var(--spine-width) / 2); }
+.page.right > .hdr, .page.right > h1, .page.right > h2, .page.right > h3 { left: calc(var(--spine-width) / 2); right:0; }
+.page > :not(.page-footer):not(h1):not(h2):not(h3):not(.hdr){ padding-top:calc(var(--header-height) + 12px) }
+
+/* hide header on cover/back */
+.page.cover > .hdr, .page.back-cover > .hdr { display:none }
+}
+.page > :not(.page-footer):not(h1):not(h2):not(h3):not(.hdr){ padding-top:72px }
+.page-footer{ position:absolute; bottom:12px; left:12px; right:12px; border-top:1px solid #eee; padding:8px 12px; font-size:12px; color:#444; z-index:120; background: linear-gradient(180deg,#fff,#fafafa) }
+.page.even .page-footer{ text-align:right }
+.page.odd .page-footer{ text-align:left }
+
+/* hide page number/footer and header for cover and final end page */
+.page.cover .page-footer, .page.end .page-footer{ display:none }
+.page.cover > .hdr, .page.end > .hdr { display:none }
+
+/* ensure page content never scrolls */
+.page{ overflow:hidden }
+
+/* overlay header/footer (not affected by flipping) */
+.spread-overlay{ position:absolute; inset:0; pointer-events:none; z-index:200 }
+.global-header{ position:absolute; top:0; left:0; right:0; height:var(--header-height); background:#111; color:#fff; display:flex; align-items:center; padding:0 16px; box-sizing:border-box; pointer-events:auto; z-index:210 }
+.global-footer{ position:absolute; bottom:0; left:0; right:0; height:40px; background:linear-gradient(180deg,#fff,#fafafa); display:flex; align-items:center; justify-content:space-between; padding:0 12px; box-sizing:border-box; pointer-events:auto; z-index:210; border-top:1px solid #eee }
+
+/* when overlay is active, hide per-page headers/footers to avoid duplicate UI */
+.overlay-active .page > .hdr, .overlay-active .page > h1, .overlay-active .page > h2, .overlay-active .page > h3 { display:none !important }
+.overlay-active .page .page-footer { display:none !important }
+.book-spread .page.left{ text-align: right; }
+.book-spread .page.right{ text-align: left; align-items:center; justify-content:center; }
+
+/* -------------------------
+   Typography rules
+   - Header / Subheader / Body / Numbers
+   ------------------------- */
+.hdr{ font-family: var(--font-family-serif); font-weight:700; font-size:36px; line-height:1.2; letter-spacing:-0.5px; color:var(--color-heading); margin:0 0 12px 0; }
+.subhdr{ font-family: var(--font-family-serif); font-style:italic; font-size:24px; color:var(--color-heading); margin:0 0 8px 0; }
+.body{ font-family: var(--font-family-serif); font-size:18px; line-height:1.6; color:var(--color-text); }
+.nums{ font-family: var(--font-family-serif); font-weight:700; font-size:20px; text-transform:uppercase; letter-spacing:1px; }
+
+/* -------------------------
+   Standings list (left page)
+   - rows stack vertically with exact spacing
+   ------------------------- */
+.standings{ display:flex; flex-direction:column; gap:12px; }
+.standing-row{ height:60px; display:flex; align-items:center; justify-content:flex-end; gap:12px; }
+.standing-row .team-name{ font-size:28px; font-weight:700; text-align:left; margin-right:16px; }
+.standing-row .team-abbrev{ font-size:32px; font-weight:700; text-transform:uppercase; letter-spacing:4px; text-align:center; }
+
+/* -------------------------
+   Scoreboard (right page)
+   - big scores centered with spacing rules
+   ------------------------- */
+.scoreboard{ display:flex; flex-direction:column; align-items:center; gap:80px; padding:80px 0; }
+.score-row{ display:flex; align-items:center; gap:40px; }
+.team-block{ display:flex; align-items:center; gap:16px; }
+.score{ font-family: var(--font-family-serif); font-weight:700; font-size:72px; }
+.score.home{ color: var(--color-home); }
+.score.away{ color: var(--color-away); }
+.clock{ margin-top:32px; font-size:16px; text-align:center; }
+
+/* -------------------------
+   Flags / small assets
+   - consistent sizing
+   ------------------------- */
+.flag{ width:36px; height:24px; object-fit:cover; border:1px solid #ddd; display:inline-block }
+.flag-group{ position:relative; }
+.flag-group .flag{ position:absolute; top:8px; right:8px; }
+
+/* -------------------------
+   Spacing / rhythm helpers
+   - explicit spacing rules (no exceptions)
+   ------------------------- */
+.sp-h-12{ height:12px; }
+.sp-h-24{ height:24px; }
+
+/* -------------------------
+   Scaling examples
+   - Use the single variable --spread-scale to resize everything
+   - Media queries for common breakpoints
+   ------------------------- */
+@media (min-width:1600px){ .book-spread{ --spread-scale: 1.15; } }
+@media (max-width:1024px){ .book-spread{ --spread-scale: 0.85; } }
+@media (max-width:768px){
+  .book-spread{ --spread-scale: 0.65; width:100vw; height:auto; transform-origin: top center; }
+  .book-spread{ overflow-y:auto; }
+}
+
+/* Auto-fit trick: scale to viewport width (optional single-rule alternative)
+   Uncomment to enable: .book-spread { transform: scale(calc(100vw / 1200)); }
+*/
+
+/* -------------------------
+   Quick utilities / accessibility
+   ------------------------- */
+.visually-hidden{ position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap }
+
+/* generic placeholder used in examples */
+.placeholder{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;color:#999}
+
+/* ensure flex children inside .page don't force overflow */
+.page > * { min-height: 0 }
+
+/* End of blueprint */
+
+/* ----------------------------------
+    MORPH: simple design tokens + utility classes
+    - colors, fonts, sizing
+    - page layout shortcuts (spine, paddings)
+    - header/footer utilities and cover/back markers
+---------------------------------- */
+:root{
+   --m-primary:#111;       /* header bg */
+   --m-accent:#c43b3b;     /* accent / home */
+   --m-accent-2:#1b4fb3;   /* accent 2 / away */
+   --m-muted:#666;         /* footer text */
+   --m-bg:#fff;
+   --m-font-serif: Georgia, 'Times New Roman', serif;
+   --m-font-sans: system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+
+   --m-page-pad-top: 10px;    /* default inner top padding (below header) */
+   --m-page-pad-bottom: 12px; /* default inner bottom padding (above footer) */
+   --m-header-height: 40px;
+   --m-footer-height: 40px;
+}
+
+/* colors */
+.c-primary{ color: var(--m-primary) }
+.c-accent{ color: var(--m-accent) }
+.c-accent-2{ color: var(--m-accent-2) }
+.c-muted{ color: var(--m-muted) }
+
+/* typography */
+.t-title{ font-family: var(--m-font-serif); font-weight:700; font-size:36px }
+.t-sub{ font-family: var(--m-font-serif); font-style:italic; font-size:24px }
+.t-body{ font-family: var(--m-font-serif); font-size:18px; line-height:1.6 }
+.t-nums{ font-family: var(--m-font-serif); font-weight:700; font-size:20px }
+.strong, .t-strong{ font-weight:700 }
+.bold{ font-weight:700 }
+
+/* page layout helpers */
+.book-spread{ background: var(--m-bg) }
+.page{ box-sizing:border-box }
+.page.left, .page.right{ display:flex; flex-direction:column }
+
+/* paddings for different page types */
+.page.with-header{ padding-top: calc(var(--m-page-pad-top) + var(--m-header-height)) }
+.page.with-footer{ padding-bottom: calc(var(--m-page-pad-bottom) + var(--m-footer-height)) }
+.page.no-header.no-footer{ padding:0 }
+.page.full-image{ padding:0 } /* full-bleed image */
+.page.padded-image{ padding:12px } /* image with padding + footer/header as needed */
+
+/* header/footer classes used inside page elements */
+.page-header{ height: var(--m-header-height); background: var(--m-primary); color:#fff; display:flex; align-items:center; padding:0 12px; box-sizing:border-box }
+.page-footer{ height: var(--m-footer-height); border-top:1px solid #eee; display:flex; align-items:center; padding:0 12px; box-sizing:border-box; color:var(--m-muted) }
+
+/* odd / even helpers */
+.page.odd .page-footer{ text-align:left }
+.page.even .page-footer{ text-align:right }
+
+/* spine handling (visual) */
+:root{ --m-spine-width: 8px }
+.book-spread::after{ width: var(--m-spine-width) }
+
+/* cover / back / end markers */
+.page.cover{ /* front cover */ }
+.page.back-cover{ /* back cover */ }
+.page.end{ /* final end page */ }
+
+/* utility toggles */
+.no-header{ --m-hide-header:1 }
+.no-footer{ --m-hide-footer:1 }
+.no-header-footer{ --m-hide-header:1; --m-hide-footer:1 }
+.no-footer-with-header{ --m-hide-footer:1 }
+
+/* small helpers for titles inside pages */
+.title{ font-family: var(--m-font-serif); font-size:28px; font-weight:700; margin:0 0 8px 0 }
+.subtitle{ font-family: var(--m-font-serif); font-size:20px; font-style:italic; margin:0 0 12px 0 }
+
+/* end morph */

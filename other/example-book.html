@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ono Tournament Book</title>
+  <link rel="stylesheet" href="book-example.css">
+  <style>
+    body { background:#f8f8f8; padding:20px; margin:0; }
+    .placeholder { background:#f0f0f0; border:1px dashed #ccc; color:#666; display:flex; align-items:center; justify-content:center; min-height:80px; font-style:italic; border-radius:4px; }
+    .ono-logo { width:120px; height:120px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:24px; margin:0 auto; }
+    .standings { display:flex; flex-direction:column; gap:4px; margin-top:8px; }
+    .standing-row { display:flex; gap:8px; align-items:center; font-size:12px; padding:4px 0; border-bottom:1px solid #eee; }
+    .team-name { flex:1; }
+    .team-abbrev { width:36px; color:#666; }
+    .nums { width:60px; text-align:right; font-variant-numeric:tabular-nums; }
+    h3.subtitle { border-bottom: 1px solid navy; padding-bottom: 2px; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Front Cover -->
+  <section class="single-page">
+    <article id="p-cover" class="page cover">
+      <div class="ono-logo">ONO</div>
+    </article>
+  </section>
+
+  <!-- Spread 1: pp 1-2 -->
+  <section class="book-spread" aria-label="Spread 1">
+    <article id="p1" class="page odd">
+      <div class="page-header"><span>Introduction</span></div>
+      <div class="content-area">
+        <h1 class="title">Welcome to the Ono Tournament</h1>
+        <p class="body">This tournament brings together the best players from around the world to compete for glory and honour.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">1</span><span class="pg-section">Introduction</span></div>
+    </article>
+    <article id="p2" class="page even">
+      <div class="page-header"><span>Table of Contents</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Contents</h2>
+        <ul class="body">
+          <li><a href="#p1">1 &mdash; Introduction</a></li>
+          <li><a href="#p3">3 &mdash; Daily Buzz</a></li>
+          <li><a href="#p4">4&ndash;6 &mdash; All Matches</a></li>
+          <li><a href="#p7">7&ndash;18 &mdash; Groups A&ndash;L</a></li>
+          <li><a href="#p19">19&ndash;23 &mdash; Rules &amp; Operations</a></li>
+          <li><a href="#p24">24 &mdash; Player Stats</a></li>
+          <li><a href="#p27">27&ndash;28 &mdash; Round of 32</a></li>
+          <li><a href="#p29">29&ndash;30 &mdash; Knockouts</a></li>
+          <li><a href="#p31">31 &mdash; Venues</a></li>
+          <li><a href="#p32">32 &mdash; History</a></li>
+          <li><a href="#p33">33 &mdash; Notes</a></li>
+          <li><a href="#p36">36 &mdash; Credits</a></li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">2</span><span class="pg-section">Table of Contents</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 2: pp 3-4 -->
+  <section class="book-spread" aria-label="Spread 2">
+    <article id="p3" class="page odd">
+      <div class="page-header">
+        <span id="db-header-text">Daily Buzz - Thursday</span>
+      </div>
+      <div class="content-area">
+        <div id="daily-buzz" class="all-matches-wrap"></div>
+      </div>
+      <div id="db-stats" style="display:flex;gap:6px;padding:0 14px 8px;">
+          <div class="db-stat-box" style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+            <div id="db-played" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Games Played</div>
+          </div>
+          <div class="db-stat-box" style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+            <div id="db-goals" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Goals Scored</div>
+          </div>
+          <div class="db-stat-box" style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+            <div id="db-remaining" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Games Left</div>
+          </div>
+          <div class="db-stat-box" style="flex:1;border:1px solid #ddd;border-top:3px solid #c8102e;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+            <div id="db-days" style="font-size:22px;font-weight:700;color:#c8102e;line-height:1;">—</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Days to Final</div>
+          </div>
+      </div>
+      <div class="page-footer"><span class="pg-num">3</span><span class="pg-section">Daily Buzz</span></div>
+    </article>
+    <article id="p4" class="page even">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-1" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">4</span><span class="pg-section">Group Stage</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 3: pp 5-6 Group Stage -->
+  <section class="book-spread" aria-label="Spread 3">
+    <article id="p5" class="page odd">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-2" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">5</span><span class="pg-section">Group Stage</span></div>
+    </article>
+    <article id="p6" class="page even">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-3" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">6</span><span class="pg-section">Group Stage</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 4: pp 7-8 -->
+  <section class="book-spread" aria-label="Spread 4">
+    <article id="p7" class="page odd">
+      <div class="page-header"><span>Group A</span></div>
+      <div class="content-area"><div id="grp-A" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">7</span><span class="pg-section">Group A</span></div>
+    </article>
+    <article id="p8" class="page even">
+      <div class="page-header"><span>Group B</span></div>
+      <div class="content-area"><div id="grp-B" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">8</span><span class="pg-section">Group B</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 5: pp 9-10 -->
+  <section class="book-spread" aria-label="Spread 5">
+    <article id="p9" class="page odd">
+      <div class="page-header"><span>Group C</span></div>
+      <div class="content-area"><div id="grp-C" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">9</span><span class="pg-section">Group C</span></div>
+    </article>
+    <article id="p10" class="page even">
+      <div class="page-header"><span>Group D</span></div>
+      <div class="content-area"><div id="grp-D" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">10</span><span class="pg-section">Group D</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 6: pp 11-12 -->
+  <section class="book-spread" aria-label="Spread 6">
+    <article id="p11" class="page odd">
+      <div class="page-header"><span>Group E</span></div>
+      <div class="content-area"><div id="grp-E" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">11</span><span class="pg-section">Group E</span></div>
+    </article>
+    <article id="p12" class="page even">
+      <div class="page-header"><span>Group F</span></div>
+      <div class="content-area"><div id="grp-F" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">12</span><span class="pg-section">Group F</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 7: pp 13-14 -->
+  <section class="book-spread" aria-label="Spread 7">
+    <article id="p13" class="page odd">
+      <div class="page-header"><span>Group G</span></div>
+      <div class="content-area"><div id="grp-G" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">13</span><span class="pg-section">Group G</span></div>
+    </article>
+    <article id="p14" class="page even">
+      <div class="page-header"><span>Group H</span></div>
+      <div class="content-area"><div id="grp-H" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">14</span><span class="pg-section">Group H</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 8: pp 15-16 -->
+  <section class="book-spread" aria-label="Spread 8">
+    <article id="p15" class="page odd">
+      <div class="page-header"><span>Group I</span></div>
+      <div class="content-area"><div id="grp-I" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">15</span><span class="pg-section">Group I</span></div>
+    </article>
+    <article id="p16" class="page even">
+      <div class="page-header"><span>Group J</span></div>
+      <div class="content-area"><div id="grp-J" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">16</span><span class="pg-section">Group J</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 9: pp 17-18 -->
+  <section class="book-spread" aria-label="Spread 9">
+    <article id="p17" class="page odd">
+      <div class="page-header"><span>Group K</span></div>
+      <div class="content-area"><div id="grp-K" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">17</span><span class="pg-section">Group K</span></div>
+    </article>
+    <article id="p18" class="page even">
+      <div class="page-header"><span>Group L</span></div>
+      <div class="content-area"><div id="grp-L" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">18</span><span class="pg-section">Group L</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 10: pp 19-20 -->
+  <section class="book-spread" aria-label="Spread 10">
+    <article id="p19" class="page odd">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">1. General Match Laws</h3>
+        <ul class="body">
+          <li><strong>Standard Duration:</strong> Each match lasts 90 minutes, consisting of two 45-minute periods.</li>
+          <li><strong>IFAB Standards:</strong> All matches are played in accordance with the Laws of the Game as force for tournament. <em style="display:inline">Full laws: <a href="https://downloads.theifab.com/downloads/laws-of-the-game-2025-26-double-pages?l=en" target="_blank" style="display:inline;color:#1a6bbf">theifab.com</a></em></li>
+          <li><strong>Technology:</strong> Goal-Line Technology (GLT) verifies all goal decisions. VAR and semi-automated offside technology are used for all match-changing incidents.</li>
+          <li><strong>Official Language:</strong> In case of any discrepancy in match laws, the English version is authoritative.</li>
+        </ul>
+        <h3 class="subtitle">2. Substitution Rules</h3>
+        <ul class="body">
+          <li><strong>Standard Allotment:</strong> Maximum of 5 substitutes per match.</li>
+          <li><strong>Opportunities:</strong> Maximum of 3 substitution opportunities during regulation time (excluding half-time).</li>
+          <li><strong>Half-Time:</strong> Substitutions made during the half-time interval do not count as a used opportunity.</li>
+          <li><strong>Extra Time:</strong> One additional substitute granted (total 6) with one additional opportunity. Substitutions before extra time or at ET half-time do not count.</li>
+          <li><strong>Concussion Subs:</strong> One additional permanent concussion substitution permitted per match. The opposing team receives one additional regular substitution in return.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">19</span><span class="pg-section">Rules</span></div>
+    </article>
+    <article id="p20" class="page even">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">3. Disciplinary: Cards &amp; Suspensions</h3>
+        <ul class="body">
+          <li><strong>Yellow Cards:</strong> Two cautions in two different matches results in automatic suspension from the next match.</li>
+          <li><strong>Card Cancellation:</strong> Single yellow cards are cancelled after the quarter-finals to ensure no player misses the final due to a semi-final caution.</li>
+          <li><strong>Red Cards:</strong> A direct or indirect red card results in automatic suspension from the next match. FIFA may impose additional sanctions.</li>
+          <li><strong>Carry-over:</strong> Pending red card suspensions carry over to the final tournament. Single yellows from qualifiers do not carry over.</li>
+        </ul>
+        <h3 class="subtitle">4. Extra Time &amp; Penalties (Knockout Stages)</h3>
+        <ul class="body">
+          <li><strong>Structure:</strong> Two 15-minute periods.</li>
+          <li><strong>Intervals:</strong> 5-minute break after regulation time. Short drinks break (max 1 min) permitted at ET half-time.</li>
+          <li><strong>The Coin Toss:</strong> First toss determines which goal kicks are taken at. Second toss winner chooses whether to take the first or second kick.</li>
+          <li><strong>Player Position:</strong> During the interval before penalties, all players must remain on the pitch.</li>
+          <li><strong>Cards Reset:</strong> All yellow cards are cleared at the start of the penalty shoot-out. <em>Note: two yellows during the shoot-out still result in a red card and dismissal; any card shown also counts toward cumulative suspension thresholds.</em></li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">20</span><span class="pg-section">Rules</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 11: pp 21-22 -->
+  <section class="book-spread" aria-label="Spread 11">
+    <article id="p21" class="page odd">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">5. Kits, Numbers, &amp; Prohibitions</h3>
+        <ul class="body">
+          <li><strong>Numbers:</strong> Only 1 to 26 are permitted. Number 1 is reserved exclusively for a goalkeeper.</li>
+          <li><strong>Display:</strong> Numbers must be clearly visible on the chest, back of shirt, and front of shorts.</li>
+          <li><strong>Names:</strong> Last name or popular name must appear above the number and match the official release list.</li>
+          <li><strong>No Messages:</strong> Political, religious, or personal messages or slogans are strictly prohibited on all playing equipment and undergarments.</li>
+          <li><strong>Spare Kits:</strong> Teams must provide goalkeeper shirts without names or numbers for outfield players who may need to take the goalkeeper position.</li>
+          <li><strong>Kit Color Allocation:</strong> FIFA informs teams of colors no later than one month before the competition. Priority order: Team A playing kit, Team B playing kit, Team A goalkeeper kit, Team B goalkeeper kit, match officials&rsquo; kit.</li>
+        </ul>
+        <h3 class="subtitle">6. Group Stage Tie-Breakers</h3>
+        <ul class="body">
+          <li>If teams are level on points, ranking is determined by:
+            <p class="body"><strong>(1)</strong> H2H points &rarr; <strong>(2)</strong> H2H goal difference &rarr; <strong>(3)</strong> H2H goals scored &rarr; <strong>(4)</strong> Overall GD &rarr; <strong>(5)</strong> Overall goals scored &rarr; <strong>(6)</strong> Fair play score (YC&nbsp;&minus;1, Indirect RC&nbsp;&minus;3, Direct RC&nbsp;&minus;4, YC+DRC&nbsp;&minus;5) &rarr; <strong>(7)</strong> FIFA World Ranking.</p>
+          </li>
+        </ul>  
+      </div>
+      <div class="page-footer"><span class="pg-num">21</span><span class="pg-section">Rules</span></div>
+    </article>
+    <article id="p22" class="page even">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">7. Other Equipment</h3>
+        <ul class="body">
+          <li><strong>Sleeve Badges:</strong> FIFA supplies players&rsquo; sleeve badges with the official competition logo (right sleeve).</li>
+          <li><strong>Team Equipment:</strong> FIFA provides all drinks bottles, coolers, medical bags, etc. Only these may be used at stadiums and training sessions.</li>
+          <li><strong>Captain&rsquo;s Armband:</strong> The captain must wear the FIFA-issued armband that most clearly contrasts with the sleeve. Non-compliance may lead to disciplinary proceedings.</li>
+          <li><strong>Footballs:</strong> FIFA exclusively supplies and selects all footballs. Only these balls may be used for official training and warm-ups.</li>
+          <li><strong>Warm-up Bibs:</strong> Only FIFA-provided warm-up bibs allowed during training, pre-match warm-ups, on benches, and for substitutes.</li>
+        </ul>
+        <h3 class="subtitle">8. Match Day Operations</h3>
+        <ul class="body">
+          <li><strong>Arrival:</strong> Teams must arrive at the stadium 90 minutes before kick-off. Each must reach host country 5 days before their first match.</li>
+          <li><strong>Start List:</strong> Submitted 90 minutes before kick-off.</li>
+          <li><strong>The Bench:</strong> Maximum of 26 people (15 substitutes and 11 officials, including one team doctor).</li>
+          <li><strong>Warm-ups:</strong> A maximum of 5 players and 1 official may warm up simultaneously. Use of balls is prohibited during these warm-ups.</li>
+          <li><strong>Prohibitions:</strong> No smoking or vaping in the technical area. In stadiums, only permitted in designated areas.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">22</span><span class="pg-section">Rules</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 12: pp 23-24 -->
+  <section class="book-spread" aria-label="Spread 12">
+    <article id="p23" class="page odd">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">9. Stadiums &amp; Field of Play</h3>
+        <ul class="body">
+          <li><strong>Pitch Surface:</strong> Matches must be on natural grass. No non-football events 2 months prior & no events of any kind 1 month prior.</li>
+          <li><strong>Dimensions:</strong> Game pitch shall be 105m &times; 68m.</li>
+          <li><strong>Maintenance:</strong> FIFA defines grass heights and watering schedule.</li>
+          <li><strong>Equipment:</strong> Goals must have white posts and nets with dark supports and padding. Spare goals, nets, and corner flags must be stored nearby.</li>
+          <li><strong>Retractable Roofs:</strong> FIFA decides if the roof is open or closed. If weather worsens, the referee may order it closed for the duration of the match. The roof must only be moved when the pitch is empty.</li>
+        </ul>
+        <h3 class="subtitle">10. Special Circumstances</h3>
+        <ul class="body">
+          <li><strong>Abandoned Matches:</strong> If abandoned, the match resumes at the exact minute and scoreline with original players. Teams use remaining substitutions; sent-off players cannot be replaced.</li>
+          <li><strong>Goalkeeper Replacement:</strong> Any incoming replacement goalkeeper shall be assigned the next possible unused shirt number (e.g., 27).</li>
+          <li><strong>Withdrawals &amp; Exclusions:</strong>If a team withdraws or is excluded during the group stage, all their results are declared null and void. FIFA retains sole discretion over replacements and further actions.</li>
+          <li><strong>Rescheduling:</strong> FIFA reserves the right to cancel, reschedule, or relocate matches for any reason. This includes health, safety, security, or force majeure.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">23</span><span class="pg-section">Rules</span></div>
+    </article>
+    <article id="p24" class="page even">
+      <div class="page-header"><span>Player Stats</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">Player Statistics</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead>
+            <tr style="border-bottom:2px solid navy;">
+              <th style="text-align:left;padding:3px 4px;">#</th>
+              <th style="text-align:left;padding:3px 4px;">Player</th>
+              <th style="text-align:left;padding:3px 4px;">Country</th>
+              <th style="text-align:center;padding:3px 4px;">G</th>
+              <th style="text-align:center;padding:3px 4px;">A</th>
+              <th style="text-align:center;padding:3px 4px;">YC</th>
+              <th style="text-align:center;padding:3px 4px;">RC</th>
+            </tr>
+          </thead>
+          <tbody id="player-stats-body">
+            <tr style="border-bottom:1px solid #eee;"><td colspan="7" style="padding:4px;color:#999;font-style:italic;">Stats will appear here</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="page-footer"><span class="pg-num">24</span><span class="pg-section">Player Stats</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 13: pp 25-26 -->
+  <section class="book-spread" aria-label="Spread 13">
+    <article id="p25" class="page odd">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">25</span><span class="pg-section"></span></div>
+    </article>
+    <article id="p26" class="page even">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">26</span><span class="pg-section"></span></div>
+    </article>
+  </section>
+
+  <!-- Spread 14: pp 27-28 -->
+  <section class="book-spread" aria-label="Spread 14">
+    <article id="p27" class="page odd">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-r32-1" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">27</span><span class="pg-section">Round of 32</span></div>
+    </article>
+    <article id="p28" class="page even">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-26" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">28</span><span class="pg-section">Round of 32</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 15: pp 29-30 -->
+  <section class="book-spread" aria-label="Spread 15">
+    <article id="p29" class="page odd">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-27" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">29</span><span class="pg-section">Knockouts</span></div>
+    </article>
+    <article id="p30" class="page even">
+      <div class="page-header"><span>Knockout Finals</span></div>
+      <div class="content-area"><div id="ko-finals" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">30</span><span class="pg-section">Finals</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 16: pp 31-32 -->
+  <section class="book-spread" aria-label="Spread 16">
+    <article id="p31" class="page odd">
+      <div class="page-header"><span>Venues</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Tournament Venues</h2>
+        <ul class="body">
+          <li><strong>Main Arena:</strong> Capacity 50,000</li>
+          <li><strong>Secondary Arena:</strong> Capacity 25,000</li>
+          <li><strong>Training Facilities:</strong> 8 fields available</li>
+          <li><strong>Accommodation:</strong> Partner hotels nearby</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">31</span><span class="pg-section">Venues</span></div>
+    </article>
+    <article id="p32" class="page even">
+      <div class="page-header"><span>History</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Tournament History</h2>
+        <p class="body">The Ono Tournament has been held annually since 2010. It started as a small regional competition and has grown into one of the most prestigious tournaments in the world.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">32</span><span class="pg-section">History</span></div>
+    </article>
+  </section>
+
+  <!-- Spread 17: pp 33-34 -->
+  <section class="book-spread" aria-label="Spread 17">
+    <article id="p33" class="page odd">
+      <div class="page-header"><span>Notes</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Personal Notes</h2>
+        <div class="placeholder">Space for personal notes and observations</div>
+      </div>
+      <div class="page-footer"><span class="pg-num">33</span><span class="pg-section">Notes</span></div>
+    </article>
+    <article id="p34" class="page even">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">34</span><span class="pg-section"></span></div>
+    </article>
+  </section>
+
+  <!-- Spread 18: pp 35-36 -->
+  <section class="book-spread" aria-label="Spread 18">
+    <article id="p35" class="page odd">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">35</span><span class="pg-section"></span></div>
+    </article>
+    <article id="p36" class="page even">
+      <div class="page-header"><span>Credits</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Credits &amp; Acknowledgements</h2>
+        <p class="body">Special thanks to all the players, coaches, officials, and volunteers who make this tournament possible.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">36</span><span class="pg-section">Credits</span></div>
+    </article>
+  </section>
+
+  <!-- Back Cover -->
+  <section class="single-page">
+    <article id="p-back" class="page cover">
+      <div class="ono-logo">ONO</div>
+    </article>
+  </section>
+
+  <script src="book-groups.js"></script>
+  <script>
+    (function() {
+      // Final: July 19 2026
+      var FINAL_DATE = new Date('2026-07-19T00:00:00');
+      var today = new Date(); today.setHours(0,0,0,0);
+      var daysToFinal = Math.max(0, Math.ceil((FINAL_DATE - today) / 86400000));
+
+      var played = 0, goals = 0;
+      var TOTAL_MATCHES = 104; // 72 group stage + 32 knockout
+      function countMatches(arr) {
+        arr.forEach(function(m) {
+          if (m.hs !== '' && m.as !== '' && m.hs !== null && m.as !== null) {
+            played++;
+            goals += (Number(m.hs) || 0) + (Number(m.as) || 0);
+          }
+        });
+      }
+      if (typeof GROUPS !== 'undefined') {
+        Object.keys(GROUPS).forEach(function(gk) { countMatches(GROUPS[gk].matches); });
+      }
+      if (typeof KNOCKOUT !== 'undefined') {
+        Object.keys(KNOCKOUT).forEach(function(rk) { countMatches(KNOCKOUT[rk]); });
+      }
+      var remaining = TOTAL_MATCHES - played;
+
+      document.getElementById('db-played').textContent    = played;
+      document.getElementById('db-goals').textContent     = goals;
+      document.getElementById('db-remaining').textContent = remaining;
+      document.getElementById('db-days').textContent      = daysToFinal;
+    })();
+  </script>
+</body>
+</html>

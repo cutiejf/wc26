@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ono Tournament Book</title>
+  <link rel="stylesheet" href="book-example.css">
+  <link rel="stylesheet" href="flipbook.css">
+  <style>
+    /* Flipbook body */
+    body { background:#111; padding:0; margin:0; overflow:hidden; }
+
+    /* book-example.css sets overflow:hidden + flex-direction:column on .page which breaks the flipbook */
+    #the-book .page { overflow: visible !important; flex-direction: row !important; }
+
+    /* knockout content-areas: scroll instead of clip */
+    #ko-r32-1, #ko-26, #ko-27, #ko-finals { overflow-y: auto; height: 100%; }
+
+    /* Only knockout content-areas scroll; rules/groups stay clipped (no scrollbar) */
+    #the-book .content-area:has(.ko-wrap) { overflow-y: auto !important; }
+
+    /* Restore font — flipbook.css body{font:10px Poppins} overrides book-example.css cascade */
+    .front, .back {
+      font-family: system-ui, 'Segoe UI', Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #1a1a1a;
+    }
+    #the-book .front, #the-book .back {
+      -webkit-font-smoothing: subpixel-antialiased;
+      will-change: transform;
+      transform: translateZ(1px);
+    }
+
+    /* Fix: book-example.css sets overflow:hidden + position:relative on .page
+       which clips the .back panels. Reset only the flipbook's outer sheet divs. */
+    #the-book > .page {
+      overflow: visible !important;
+      position: static !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* .back panels live at x=-100% inside their page; visible outside container */
+    #the-book .front, #the-book .back { overflow: hidden; }
+
+    /* Inner panel layout — .front/.back are the page panels */
+    .front, .back { display:flex !important; flex-direction:column !important; }
+
+    /* book container: overflow visible so rotated back panels show left of spine */
+    #the-book { overflow: visible !important; }
+
+    /* spine at screen center when open; JS overrides transform for cover */
+    #the-book { left: 50% !important; transform: translateX(0); }
+
+    /* Hide everything until fonts + window load resolve — prevents credits/wrong-page flash */
+    #the-book { opacity: 0; transition: none !important; }
+    /* snap opacity in instantly — no fade prevents any wrong-page flash */
+    #the-book.ready { transition: transform 0.7s cubic-bezier(0.4,0,0.2,1) !important; }
+    #the-book > .page:not(#pg-0) { visibility: hidden !important; }
+    /* Also block page transitions before ready */
+    #the-book:not(.ready) > .page { transition: none !important; }
+    #the-book.ready { opacity: 1; }
+    #the-book.ready > .page:not(#pg-0) { visibility: visible !important; }
+
+    /* Cover panels */
+    .is-cover {
+      background:#0b2a4a !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
+    /* Inline helpers from example-book */
+    .placeholder { background:#f0f0f0; border:1px dashed #ccc; color:#666; display:flex; align-items:center; justify-content:center; min-height:80px; font-style:italic; border-radius:4px; }
+    .ono-logo { width:120px; height:120px; background:#000; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; font-size:24px; margin:0 auto; }
+    .standings { display:flex; flex-direction:column; gap:4px; margin-top:8px; }
+    .standing-row { display:flex; gap:8px; align-items:center; font-size:12px; padding:4px 0; border-bottom:1px solid #eee; }
+    .team-name { flex:1; }
+    .team-abbrev { width:36px; color:#666; }
+    .nums { width:60px; text-align:right; font-variant-numeric:tabular-nums; }
+    h3.subtitle { border-bottom:1px solid navy; padding-bottom:2px; margin-bottom:4px; }
+
+    /* Nav controls */
+    .flip-controls {
+      position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+      display:flex; gap:10px; align-items:center; z-index:1000;
+    }
+    .flip-btn {
+      background:#0b2a4a; color:#aaa; border:none;
+      width:44px; height:44px; font-size:18px; cursor:pointer; border-radius:4px;
+      font-family:system-ui,sans-serif;
+    }
+    .flip-btn:hover { background:#1a4472; color:#fff; }
+    .flip-btn-sm {
+      background:rgba(11,42,74,0.55); color:#888; border:none;
+      width:28px; height:28px; font-size:11px; font-weight:700; cursor:pointer;
+      border-radius:3px; font-family:system-ui,sans-serif; letter-spacing:0.04em;
+    }
+    .flip-btn-sm:hover { background:#1a4472; color:#fff; }
+    #flip-display {
+      color:#aaa; font-size:12px; font-family:system-ui,sans-serif;
+      min-width:90px; text-align:center; letter-spacing:0.04em;
+    }
+    .content-area a { color:#1a6bbf; text-decoration:underline; cursor:pointer; }
+
+    /* Footer: .front = left page: pg-num right, ONO.flips left */
+    .front .page-footer { flex-direction: row-reverse !important; }
+    .front .page-footer::after { content: 'ONO.flips'; position: absolute; left: 14px !important; right: auto; }
+
+    /* Footer: .back = right page: pg-num left, ONO.flips right */
+    .back .page-footer { flex-direction: row !important; }
+    .back .page-footer::after { content: 'ONO.flips'; position: absolute; right: 14px; left: auto !important; }
+
+    /* Zoom layer */
+    #book-zoom-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      transform-origin: 50% 50%;
+      transform-style: preserve-3d;
+      /* no default transition — added in JS only on reset so scroll has zero stutter */
+    }
+    #book-zoom-layer > * { pointer-events: auto; }
+  </style>
+</head>
+<body>
+
+<div id="book-zoom-layer"><div class="book" id="the-book">
+
+  <!-- Sheet 0: Cover / p1 -->
+  <div class="page" id="pg-0">
+    <div class="front is-cover">
+      <div class="ono-logo">ONO</div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Introduction</span></div>
+      <div class="content-area">
+        <h1 class="title">Welcome to the Ono Tournament</h1>
+        <p class="body">This tournament brings together the best players from around the world to compete for glory and honour.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">1</span><span class="pg-section">Introduction</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 1: p2 / p3 -->
+  <div class="page" id="pg-1">
+    <div class="front">
+      <div class="page-header"><span>Table of Contents</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Contents</h2>
+        <ul class="body">
+          <li><a href="#" onclick="goTo(1);return false;">1 &mdash; Introduction</a></li>
+          <li><a href="#" onclick="goTo(2);return false;">3 &mdash; Daily Buzz</a></li>
+          <li><a href="#" onclick="goTo(2);return false;">4&ndash;6 &mdash; All Matches</a></li>
+          <li><a href="#" onclick="goTo(4);return false;">7&ndash;18 &mdash; Groups A&ndash;L</a></li>
+          <li><a href="#" onclick="goTo(10);return false;">19&ndash;23 &mdash; Rules &amp; Operations</a></li>
+          <li><a href="#" onclick="goTo(12);return false;">24 &mdash; Player Stats</a></li>
+          <li><a href="#" onclick="goTo(14);return false;">27&ndash;28 &mdash; Round of 32</a></li>
+          <li><a href="#" onclick="goTo(15);return false;">29&ndash;30 &mdash; Knockouts</a></li>
+          <li><a href="#" onclick="goTo(16);return false;">31 &mdash; Venues</a></li>
+          <li><a href="#" onclick="goTo(16);return false;">32 &mdash; History</a></li>
+          <li><a href="#" onclick="goTo(17);return false;">33 &mdash; Notes</a></li>
+          <li><a href="#" onclick="goTo(18);return false;">36 &mdash; Credits</a></li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">2</span><span class="pg-section">Table of Contents</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span id="db-header-text">Daily Buzz</span></div>
+      <div class="content-area" style="padding-top:4px;">
+        <div id="daily-buzz" class="all-matches-wrap"></div>
+      </div>
+      <div id="db-stats" style="display:flex;gap:6px;padding:0 14px 8px;">
+        <div style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+          <div id="db-played" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Games Played</div>
+        </div>
+        <div style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+          <div id="db-goals" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Goals Scored</div>
+        </div>
+        <div style="flex:1;border:1px solid #ddd;border-top:3px solid navy;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+          <div id="db-remaining" style="font-size:22px;font-weight:700;color:navy;line-height:1;">—</div>
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Games Left</div>
+        </div>
+        <div style="flex:1;border:1px solid #ddd;border-top:3px solid #c8102e;border-radius:3px;padding:6px 4px;text-align:center;background:#fff;">
+          <div id="db-days" style="font-size:22px;font-weight:700;color:#c8102e;line-height:1;">—</div>
+          <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:3px;">Days to Final</div>
+        </div>
+      </div>
+      <div class="page-footer"><span class="pg-num">3</span><span class="pg-section">Daily Buzz</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 2: p4 / p5 -->
+  <div class="page" id="pg-2">
+    <div class="front">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-1" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">4</span><span class="pg-section">Group Stage</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-2" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">5</span><span class="pg-section">Group Stage</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 3: p6 / p7 -->
+  <div class="page" id="pg-3">
+    <div class="front">
+      <div class="page-header"><span>Group Stage &mdash; All Matches</span></div>
+      <div class="content-area"><div id="all-matches-3" class="all-matches-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">6</span><span class="pg-section">Group Stage</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group A</span></div>
+      <div class="content-area"><div id="grp-A" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">7</span><span class="pg-section">Group A</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 4: p8 / p9 -->
+  <div class="page" id="pg-4">
+    <div class="front">
+      <div class="page-header"><span>Group B</span></div>
+      <div class="content-area"><div id="grp-B" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">8</span><span class="pg-section">Group B</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group C</span></div>
+      <div class="content-area"><div id="grp-C" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">9</span><span class="pg-section">Group C</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 5: p10 / p11 -->
+  <div class="page" id="pg-5">
+    <div class="front">
+      <div class="page-header"><span>Group D</span></div>
+      <div class="content-area"><div id="grp-D" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">10</span><span class="pg-section">Group D</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group E</span></div>
+      <div class="content-area"><div id="grp-E" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">11</span><span class="pg-section">Group E</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 6: p12 / p13 -->
+  <div class="page" id="pg-6">
+    <div class="front">
+      <div class="page-header"><span>Group F</span></div>
+      <div class="content-area"><div id="grp-F" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">12</span><span class="pg-section">Group F</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group G</span></div>
+      <div class="content-area"><div id="grp-G" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">13</span><span class="pg-section">Group G</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 7: p14 / p15 -->
+  <div class="page" id="pg-7">
+    <div class="front">
+      <div class="page-header"><span>Group H</span></div>
+      <div class="content-area"><div id="grp-H" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">14</span><span class="pg-section">Group H</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group I</span></div>
+      <div class="content-area"><div id="grp-I" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">15</span><span class="pg-section">Group I</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 8: p16 / p17 -->
+  <div class="page" id="pg-8">
+    <div class="front">
+      <div class="page-header"><span>Group J</span></div>
+      <div class="content-area"><div id="grp-J" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">16</span><span class="pg-section">Group J</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Group K</span></div>
+      <div class="content-area"><div id="grp-K" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">17</span><span class="pg-section">Group K</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 9: p18 / p19 -->
+  <div class="page" id="pg-9">
+    <div class="front">
+      <div class="page-header"><span>Group L</span></div>
+      <div class="content-area"><div id="grp-L" class="grp-container"></div></div>
+      <div class="page-footer"><span class="pg-num">18</span><span class="pg-section">Group L</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">1. General Match Laws</h3>
+        <ul class="body">
+          <li><strong>Standard Duration:</strong> Each match lasts 90 minutes, consisting of two 45-minute periods.</li>
+          <li><strong>IFAB Standards:</strong> All matches are played in accordance with the Laws of the Game as in force for the tournament. <em style="display:inline">Full laws: <a href="https://downloads.theifab.com/downloads/laws-of-the-game-2025-26-double-pages?l=en" target="_blank" style="display:inline;color:#1a6bbf">theifab.com</a></em></li>
+          <li><strong>Technology:</strong> Goal-Line Technology (GLT) verifies all goal decisions. VAR and semi-automated offside technology are used for all match-changing incidents.</li>
+          <li><strong>Official Language:</strong> In case of any discrepancy in match laws, the English version is authoritative.</li>
+        </ul>
+        <h3 class="subtitle">2. Substitution Rules</h3>
+        <ul class="body">
+          <li><strong>Standard Allotment:</strong> Maximum of 5 substitutes per match.</li>
+          <li><strong>Opportunities:</strong> Maximum of 3 substitution opportunities during regulation time (excluding half-time).</li>
+          <li><strong>Half-Time:</strong> Substitutions made during the half-time interval do not count as a used opportunity.</li>
+          <li><strong>Extra Time:</strong> One additional substitute granted (total 6) with one additional opportunity. Substitutions before extra time or at ET half-time do not count.</li>
+          <li><strong>Concussion Subs:</strong> One additional permanent concussion substitution permitted per match. The opposing team receives one additional regular substitution in return.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">19</span><span class="pg-section">Rules</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 10: p20 / p21 -->
+  <div class="page" id="pg-10">
+    <div class="front">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">3. Disciplinary: Cards &amp; Suspensions</h3>
+        <ul class="body">
+          <li><strong>Yellow Cards:</strong> Two cautions in two different matches results in automatic suspension from the next match.</li>
+          <li><strong>Card Cancellation:</strong> Single yellow cards are cancelled after the quarter-finals to ensure no player misses the final due to a semi-final caution.</li>
+          <li><strong>Red Cards:</strong> A direct or indirect red card results in automatic suspension from the next match. FIFA may impose additional sanctions.</li>
+          <li><strong>Carry-over:</strong> Pending red card suspensions carry over to the final tournament. Single yellows from qualifiers do not carry over.</li>
+        </ul>
+        <h3 class="subtitle">4. Extra Time &amp; Penalties (Knockout Stages)</h3>
+        <ul class="body">
+          <li><strong>Structure:</strong> Two 15-minute periods.</li>
+          <li><strong>Intervals:</strong> 5-minute break after regulation time. Short drinks break (max 1 min) permitted at ET half-time.</li>
+          <li><strong>The Coin Toss:</strong> First toss determines which goal kicks are taken at. Second toss winner chooses whether to take the first or second kick.</li>
+          <li><strong>Player Position:</strong> During the interval before penalties, all players must remain on the pitch.</li>
+          <li><strong>Cards Reset:</strong> All yellow cards are cleared at the start of the penalty shoot-out. <em>Note: two yellows during the shoot-out still result in a red card and dismissal; any card shown also counts toward cumulative suspension thresholds.</em></li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">20</span><span class="pg-section">Rules</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">5. Kits, Numbers, &amp; Prohibitions</h3>
+        <ul class="body">
+          <li><strong>Numbers:</strong> Only 1 to 26 are permitted. Number 1 is reserved exclusively for a goalkeeper.</li>
+          <li><strong>Display:</strong> Numbers must be clearly visible on the chest, back of shirt, and front of shorts.</li>
+          <li><strong>Names:</strong> Last name or popular name must appear above the number and match the official release list.</li>
+          <li><strong>No Messages:</strong> Political, religious, or personal messages or slogans are strictly prohibited on all playing equipment and undergarments.</li>
+          <li><strong>Spare Kits:</strong> Teams must provide goalkeeper shirts without names or numbers for outfield players who may need to take the goalkeeper position.</li>
+          <li><strong>Kit Color Allocation:</strong> FIFA informs teams of colors no later than one month before the competition. Priority order: Team A playing kit, Team B playing kit, Team A goalkeeper kit, Team B goalkeeper kit, match officials&rsquo; kit.</li>
+        </ul>
+        <h3 class="subtitle">6. Group Stage Tie-Breakers</h3>
+        <ul class="body" style="margin-bottom:3px;">
+          <li>If teams are level on points, ranking is determined by:
+            <div style="display:flex;gap:8px;margin-top:3px;padding-left:4px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px;font-size:11px;">
+                <span><strong>(1)</strong> H2H points</span>
+                <span><strong>(2)</strong> H2H goal difference</span>
+                <span><strong>(3)</strong> H2H goals scored</span>
+                <span><strong>(4)</strong> Overall goal difference</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:2px;font-size:11px;">
+                <span><strong>(5)</strong> Overall goals scored</span>
+                <span><strong>(6)</strong> Fair play score *</span>
+                <span><strong>(7)</strong> FIFA World Ranking</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <p style="font-size:7.5px;font-style:italic;color:#555;line-height:1.3;border-top:1px solid #ddd;padding-top:3px;margin:0;">* scoring: Yellow Card: &minus;1 &nbsp;|&nbsp; Indirect Red Card: &minus;3 &nbsp;|&nbsp; Direct Red Card: &minus;4 &nbsp;|&nbsp; Yellow Card + Direct Red Card: &minus;5 pts</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">21</span><span class="pg-section">Rules</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 11: p22 / p23 -->
+  <div class="page" id="pg-11">
+    <div class="front">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">7. Other Equipment</h3>
+        <ul class="body">
+          <li><strong>Sleeve Badges:</strong> FIFA supplies players&rsquo; sleeve badges with the official competition logo (right sleeve).</li>
+          <li><strong>Team Equipment:</strong> FIFA provides all drinks bottles, coolers, medical bags, etc. Only these may be used at stadiums and training sessions.</li>
+          <li><strong>Captain&rsquo;s Armband:</strong> The captain must wear the FIFA-issued armband that most clearly contrasts with the sleeve. Non-compliance may lead to disciplinary proceedings.</li>
+          <li><strong>Footballs:</strong> FIFA exclusively supplies and selects all footballs. Only these balls may be used for official training and warm-ups.</li>
+          <li><strong>Warm-up Bibs:</strong> Only FIFA-provided warm-up bibs allowed during training, pre-match warm-ups, on benches, and for substitutes.</li>
+        </ul>
+        <h3 class="subtitle">8. Match Day Operations</h3>
+        <ul class="body">
+          <li><strong>Arrival:</strong> Teams must arrive at the stadium 90 minutes before kick-off. Each must reach host country 5 days before their first match.</li>
+          <li><strong>Start List:</strong> Submitted 90 minutes before kick-off.</li>
+          <li><strong>The Bench:</strong> Maximum of 26 people (15 substitutes and 11 officials, including one team doctor).</li>
+          <li><strong>Warm-ups:</strong> A maximum of 5 players and 1 official may warm up simultaneously. Use of balls is prohibited during these warm-ups.</li>
+          <li><strong>Prohibitions:</strong> No smoking or vaping in the technical area. In stadiums, only permitted in designated areas.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">22</span><span class="pg-section">Rules</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>FIFA World Cup 26 &mdash; Rules &amp; Operations</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">9. Stadiums &amp; Field of Play</h3>
+        <ul class="body">
+          <li><strong>Pitch Surface:</strong> Matches must be on natural grass. No non-football events 2 months prior & no events of any kind 1 month prior.</li>
+          <li><strong>Dimensions:</strong> Game pitch shall be 105m &times; 68m.</li>
+          <li><strong>Maintenance:</strong> FIFA defines grass heights and watering schedule.</li>
+          <li><strong>Equipment:</strong> Goals must have white posts and nets with dark supports and padding. Spare goals, nets, and corner flags must be stored nearby.</li>
+          <li><strong>Retractable Roofs:</strong> FIFA decides if the roof is open or closed. If weather worsens, the referee may order it closed for the duration of the match. The roof must only be moved when the pitch is empty.</li>
+        </ul>
+        <h3 class="subtitle">10. Special Circumstances</h3>
+        <ul class="body">
+          <li><strong>Abandoned Matches:</strong> If abandoned, the match resumes at the exact minute and scoreline with original players. Teams use remaining substitutions; sent-off players cannot be replaced.</li>
+          <li><strong>Goalkeeper Replacement:</strong> Any incoming replacement goalkeeper shall be assigned the next possible unused shirt number (e.g., 27).</li>
+          <li><strong>Withdrawals &amp; Exclusions:</strong>If a team withdraws or is excluded during the group stage, all their results are declared null and void. FIFA retains sole discretion over replacements and further actions.</li>
+          <li><strong>Rescheduling:</strong> FIFA reserves the right to cancel, reschedule, or relocate matches for any reason. This includes health, safety, security, or force majeure.</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">23</span><span class="pg-section">Rules</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 12: p24 / p25 -->
+  <div class="page" id="pg-12">
+    <div class="front">
+      <div class="page-header"><span>Player Stats</span></div>
+      <div class="content-area">
+        <h3 class="subtitle">Player Statistics</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:11px;">
+          <thead>
+            <tr style="border-bottom:2px solid navy;">
+              <th style="text-align:left;padding:3px 4px;">#</th>
+              <th style="text-align:left;padding:3px 4px;">Player</th>
+              <th style="text-align:left;padding:3px 4px;">Country</th>
+              <th style="text-align:center;padding:3px 4px;">G</th>
+              <th style="text-align:center;padding:3px 4px;">A</th>
+              <th style="text-align:center;padding:3px 4px;">YC</th>
+              <th style="text-align:center;padding:3px 4px;">RC</th>
+            </tr>
+          </thead>
+          <tbody id="player-stats-body">
+            <tr style="border-bottom:1px solid #eee;"><td colspan="7" style="padding:4px;color:#999;font-style:italic;">Stats will appear here</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="page-footer"><span class="pg-num">24</span><span class="pg-section">Player Stats</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">25</span><span class="pg-section"></span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 13: p26 / p27 -->
+  <div class="page" id="pg-13">
+    <div class="front">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">26</span><span class="pg-section"></span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-r32-1" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">27</span><span class="pg-section">Round of 32</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 14: p28 / p29 -->
+  <div class="page" id="pg-14">
+    <div class="front">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-26" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">28</span><span class="pg-section">Round of 32</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Knockouts</span></div>
+      <div class="content-area"><div id="ko-27" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">29</span><span class="pg-section">Knockouts</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 15: p30 / p31 -->
+  <div class="page" id="pg-15">
+    <div class="front">
+      <div class="page-header"><span>Knockout Finals</span></div>
+      <div class="content-area"><div id="ko-finals" class="ko-wrap"></div></div>
+      <div class="page-footer"><span class="pg-num">30</span><span class="pg-section">Finals</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Venues</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Tournament Venues</h2>
+        <ul class="body">
+          <li><strong>Main Arena:</strong> Capacity 50,000</li>
+          <li><strong>Secondary Arena:</strong> Capacity 25,000</li>
+          <li><strong>Training Facilities:</strong> 8 fields available</li>
+          <li><strong>Accommodation:</strong> Partner hotels nearby</li>
+        </ul>
+      </div>
+      <div class="page-footer"><span class="pg-num">31</span><span class="pg-section">Venues</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 16: p32 / p33 -->
+  <div class="page" id="pg-16">
+    <div class="front">
+      <div class="page-header"><span>History</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Tournament History</h2>
+        <p class="body">The Ono Tournament has been held annually since 2010. It started as a small regional competition and has grown into one of the most prestigious tournaments in the world.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">32</span><span class="pg-section">History</span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span>Notes</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Personal Notes</h2>
+        <div class="placeholder">Space for personal notes and observations</div>
+      </div>
+      <div class="page-footer"><span class="pg-num">33</span><span class="pg-section">Notes</span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 17: p34 / p35 -->
+  <div class="page" id="pg-17">
+    <div class="front">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">34</span><span class="pg-section"></span></div>
+    </div>
+    <div class="back">
+      <div class="page-header"><span></span></div>
+      <div class="content-area"></div>
+      <div class="page-footer"><span class="pg-num">35</span><span class="pg-section"></span></div>
+    </div>
+  </div>
+
+  <!-- Sheet 18: p36 / Back Cover -->
+  <div class="page" id="pg-18">
+    <div class="front">
+      <div class="page-header"><span>Credits</span></div>
+      <div class="content-area">
+        <h2 class="subtitle">Credits &amp; Acknowledgements</h2>
+        <p class="body">Special thanks to all the players, coaches, officials, and volunteers who make this tournament possible.</p>
+      </div>
+      <div class="page-footer"><span class="pg-num">36</span><span class="pg-section">Credits</span></div>
+    </div>
+    <div class="back is-cover">
+      <div class="ono-logo">ONO</div>
+    </div>
+  </div>
+
+</div></div><!-- /#book-zoom-layer -->
+
+<!-- Navigation -->
+<div class="flip-controls">
+  <button class="flip-btn-sm" id="first-btn">F</button>
+  <button class="flip-btn" id="prev-btn">&#9664;</button>
+  <span id="flip-display">Cover</span>
+  <button class="flip-btn" id="next-btn">&#9654;</button>
+  <button class="flip-btn-sm" id="last-btn">L</button>
+</div>
+
+<script src="book-groups.js"></script>
+<script>
+  /* ── Flipbook Navigation ── */
+  (function () {
+    var book  = document.getElementById('the-book');
+    var pages = Array.from(book.querySelectorAll(':scope > .page'));
+    var total = pages.length; // 19
+    pages.forEach(function (p, i) { p.style.setProperty('--i', i); });
+
+    var c = 0;
+
+    function goTo(n) {
+      c = Math.max(0, Math.min(total, n));
+      book.style.setProperty('--c', c);
+      if (c === 0) book.style.transform = 'translateX(-50%)';
+      else         book.style.transform = 'translateX(0)';
+
+      var d  = document.getElementById('flip-display');
+      var pg = c * 2 - 1;
+      if (c === 0)          d.textContent = 'Cover';
+      else if (c >= total)  d.textContent = 'Back Cover';
+      else                  d.textContent = 'p' + pg + '\u2013' + (pg + 1);
+    }
+    goTo(0);
+    // Wait for fonts + window load before revealing — same gate as flipbook-test
+    var loadPromise = new Promise(function (resolve) {
+      if (document.readyState === 'complete') { resolve(); }
+      else { window.addEventListener('load', resolve, { once: true }); }
+    });
+    Promise.all([document.fonts.ready, loadPromise]).then(function () {
+      requestAnimationFrame(function () { book.classList.add('ready'); });
+    });
+
+    window.goTo = goTo;
+
+    document.getElementById('first-btn').addEventListener('click', function () { goTo(0); });
+    document.getElementById('prev-btn').addEventListener('click',  function () { goTo(c - 1); });
+    document.getElementById('next-btn').addEventListener('click',  function () { goTo(c + 1); });
+    document.getElementById('last-btn').addEventListener('click',  function () { goTo(total); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  goTo(c + 1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    goTo(c - 1);
+    });
+
+    /* Swipe */
+    var tx = 0;
+    document.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend',   function (e) {
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 40) dx < 0 ? goTo(c + 1) : goTo(c - 1);
+    });
+  })();
+
+  /* ── Scroll Magnification ── */
+  (function () {
+    var layer = document.getElementById('book-zoom-layer');
+    if (!layer) return;
+    var sc = 1;
+    var MIN_SC = 0.9, MAX_SC = 1.25, STEP = 0.05;
+    document.addEventListener('wheel', function (e) {
+      if (!e.target || !e.target.closest || !e.target.closest('#the-book')) return;
+      e.preventDefault();
+      sc = Math.max(MIN_SC, Math.min(MAX_SC, sc * (e.deltaY < 0 ? 1 + STEP : 1 - STEP)));
+      layer.style.transition = '';
+      layer.style.transform = sc === 1 ? '' : 'scale(' + sc.toFixed(4) + ')';
+    }, { passive: false });
+    /* Double-click: smooth animated snap back to 1x dead centre */
+    document.getElementById('the-book').addEventListener('dblclick', function () {
+      sc = 1;
+      layer.style.transition = 'transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)';
+      layer.style.transform = '';
+      layer.addEventListener('transitionend', function cleanup() {
+        layer.style.transition = '';
+        layer.removeEventListener('transitionend', cleanup);
+      });
+    });
+  })();
+
+  /* ── Stat Boxes ── */
+  (function () {
+    var FINAL_DATE   = new Date('2026-07-19T00:00:00');
+    var today        = new Date(); today.setHours(0, 0, 0, 0);
+    var daysToFinal  = Math.max(0, Math.ceil((FINAL_DATE - today) / 86400000));
+    var played = 0, goals = 0, TOTAL = 104;
+
+    function count(arr) {
+      arr.forEach(function (m) {
+        if (m.hs !== '' && m.as !== '' && m.hs !== null && m.as !== null) {
+          played++;
+          goals += (Number(m.hs) || 0) + (Number(m.as) || 0);
+        }
+      });
+    }
+    if (typeof GROUPS   !== 'undefined') Object.keys(GROUPS).forEach(function (k)   { count(GROUPS[k].matches); });
+    if (typeof KNOCKOUT !== 'undefined') Object.keys(KNOCKOUT).forEach(function (k) { count(KNOCKOUT[k]); });
+
+    document.getElementById('db-played').textContent    = played;
+    document.getElementById('db-goals').textContent     = goals;
+    document.getElementById('db-remaining').textContent = TOTAL - played;
+    document.getElementById('db-days').textContent      = daysToFinal;
+  })();
+</script>
+
+</body>
+</html>

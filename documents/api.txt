@@ -1,0 +1,1357 @@
+{
+  "info": {
+    "_postman_id": "80a7b682-17be-4c0d-894e-6c6994742544",
+    "name": "football-data.org v4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Area",
+      "id": "5572c593-f376-4e4c-bb83-2aaf97a6a63f",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "user-agent": true
+        }
+      },
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/competitions/PL/"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Area List",
+      "id": "fbec63cb-8055-4359-9293-bb7b56e2d2c7",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "user-agent": true
+        }
+      },
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/areas/"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition",
+      "id": "8b83f46c-c0ee-455d-a02d-30a5ea31fb61",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "user-agent": true
+        }
+      },
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/competitions/PL/"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition List",
+      "id": "5500798d-8cf0-4dbe-be6e-407076d4f890",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/competitions"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition / Standings",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "a61b218e-237c-452e-8a23-6398cc074061",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "id": "64429672-8e60-4e18-9ae7-ad1f461ed9cf",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": {
+          "raw": "{{url}}/v4/competitions/PL/standings?season=2010&matchday=3",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v4",
+            "competitions",
+            "PL",
+            "standings"
+          ],
+          "query": [
+            {
+              "key": "season",
+              "value": "2010"
+            },
+            {
+              "key": "matchday",
+              "value": "3"
+            }
+          ]
+        }
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition / Matches",
+      "id": "7a10fef2-5927-455b-8b92-39273aab7d04",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": {
+          "raw": "{{url}}/v4/competitions/BL1/matches?matchday=23",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v4",
+            "competitions",
+            "BL1",
+            "matches"
+          ],
+          "query": [
+            {
+              "key": "matchday",
+              "value": "23"
+            }
+          ]
+        }
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition / Teams",
+      "id": "f8229829-c5ed-430b-b0c7-030426aa9ae2",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/competitions/MLS/teams"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Competition / Scorer",
+      "id": "88e8fa9a-a4d0-4e9d-8bee-71cf79d04c2d",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/competitions/PL/scorers"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Team",
+      "id": "1c97d125-1a4d-4fdd-a26b-a700d9049025",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/teams/90/"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Team List",
+      "id": "14982741-a57c-460e-a66c-4ef696e67f78",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": {
+          "raw": "{{url}}/v4/teams?limit=100&offset=100",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v4",
+            "teams"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "offset",
+              "value": "100"
+            }
+          ]
+        }
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Team / Matches",
+      "id": "90592025-2160-42e3-b1e6-ebee384b433b",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/teams/19/matches"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Person",
+      "id": "4b6f8245-98bd-44f0-a11a-126e562d3fbe",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/persons/16275"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Person / Matches",
+      "id": "9d469161-cfb0-4248-9831-515c10fd470d",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": {
+          "raw": "{{url}}/v4/persons/16275/matches?limit=40",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v4",
+            "persons",
+            "16275",
+            "matches"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "40"
+            }
+          ]
+        }
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Match",
+      "id": "a18b4e8f-527c-47f7-a07b-204e0ae365b3",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": "{{url}}/v4/matches/327117"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Match List",
+      "id": "60fed026-8091-49b7-8f76-909ed3e3ef75",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Unfold-Lineups",
+            "value": "true",
+            "type": "text"
+          },
+          {
+            "key": "X-Unfold-Bookings",
+            "value": "false",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-Unfold-Subs",
+            "value": "false",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-Unfold-Goals",
+            "value": "true",
+            "type": "text"
+          }
+        ],
+        "url": "{{url}}/v4/matches/"
+      },
+      "response": [ ]
+    },
+    {
+      "name": "Match / Head2Head",
+      "id": "27f7f2d1-646a-47f3-a3d1-642f9ac4e7cf",
+      "request": {
+        "method": "GET",
+        "header": [ ],
+        "url": {
+          "raw": "{{url}}/v4/matches/327125/head2head?limit=15",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v4",
+            "matches",
+            "327125",
+            "head2head"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "15"
+            }
+          ]
+        }
+      },
+      "response": [ ]
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": {
+      "value": "",
+      "key": "X-Auth-Token"
+    }
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "933701c2-6792-4176-bc44-0378b53f4321",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "a19acc3f-27c3-4a88-aaf6-ee8a48f50cc9",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "af4dc575-7925-4941-a747-865aea947e19",
+      "key": "url",
+      "value": "https://api.football-data.org/",
+      "type": "string"
+    }
+  ]
+}
+
+I have only 5 resources to offer, but in the end that’s all you need to built something like this. Well, not quite in a rush, but you won’t need anything other than the tools these resources and it’s subresources provide.
+
+The API follows best practices unfortunately most widely missed in other APIs. I don’t want to sound snooty, but that’s my sad experience while implementing countless (so called RESTful) APIs at my day-job or for personal use within the last decade.
+
+Resource design
+The resources of the football-data API are designed to be logical for human minds to reason about but also clean and straightforward to use within your source code.
+
+URI rules
+Resources and subresources within URIs are all written lower case. Filters on the other hand use camelCase instead and last but not least enums are all uppercase.
+
+All resources are only accessible using their plural, thus a resource by default responds with its' list representation.
+
+A list resource URI
+https://api.football-data.org/v4/teams
+Adding an id to the endpoint gives access to one particular resource:
+
+A single resource URI
+https://api.football-data.org/v4/teams/19
+I often use different resource representations, in case they are embedded into list resources. I don’t think every information is useful in every resource (representation), which is why I often limit embedded objects to a subset of their attributes. I know this is opinionated and not ideal for strongly typed languages, but I also know there are ways around that and I think the advantages outbalance here.
+Responses
+Resources are represented as JSON objects. List representations typically hold some meta-information on top to give you more information about it’s response. Let’s illustrate that with an example. Let’s call the Matches Subresource for FC Bayern München.
+
+Response for https://api.football-data.org/v4/teams/5/matches
+{
+    "filters": {
+        "competitions": "CL,BL1,DFB",
+        "permission": "TIER_THREE",
+        "limit": 100
+    },
+    "resultSet": {
+        "count": 46,
+        "competitions": "BL1,DFB,CL",
+        "first": "2021-08-13",
+        "last": "2022-05-14",
+        "played": 46,
+        "wins": 22,
+        "draws": 7,
+        "losses": 7
+    },
+    "matches": [ ... ]
+}
+On top you see the filters that were applied to the request. Filters might be applied automatically by the API (that is: setting defaults). They can also be passed in (manually) by query parameters to set or overwrite the values being used.
+
+As we didn’t specify any in the example, we only see default filters for that resource, e.g. the limitation of 100 items (which we could overwrite by suffixing "?limit=150" to the request URI).
+
+The resultSet node gives some information about the boundaries of the match list that follows as well as some basic aggregation data. Last but not least the list of match items follows.
+
+Requesting a Resource
+For a first glimpse you can use your webbrowser to browse the API. To make the responses human-readable, install a browser-plugin that beautifies JSON output, or better yet use Postman or Kongs Insomnia (not to be mixed up with the one of Faithless). Of course you can also use curl or Powershells' Invoke-WebRequest to natively fetch resources, depending on your platform.
+
+To implement the API there are lots of libraries and plugins that ease implementing RESTful APIs. I personally can recommend Unirest-Java Library also by Kong for Groovy/Java, the awesome Requests lib for Python and Guzzle for PHP. But most probably you already got your favorite HTTP library at hand.
+
+The API follows the Query-string composition standard. So if you want to use Filters read more about query definition on wikipedia.
+
+Please implement smart requests and always try to think about a good tradeoff between payload and the number of requests. Please don’t write loops to crawl resources from id 0 to id 1000. Don’t pull resources too often, they usually do not change within a second and you will get banned upon detection.
+
+API policies
+See the underneath paragraphs for explanations of the API policies that is: how and why the API acts like it does in several specific scenarios.
+
+Request-Throttling
+To protect the API from unnecessary load it is rate limited. Non-authenticated clients are allowed for 100 requests per 24 hours and can only access the area and competition list resources. Registered clients are allowed for 10 requests/minute in the free plan, 30 requests/minute in Standard plan and 60 requests/minute in all plans above.
+
+If the limit is not enough for your use-case, it’s possible to increase it further. Please drop me a line.
+
+Attributes and values
+The API embraces null as a valid value. Mostly this happens for values that are not known yet (the score of a game before it started, for instance) or are just not available (attendance for very exotic / lower competitions). Empty lists are valid as well.
+
+Also I stick to true data types, so a score will be returned as an integer and not as a string as in almost any other sports API. I do this because a score is a number and not a character.
+
+Running competitions
+This node includes competitions the team started participating at the beginning of the season. Notice a competition will still appear here, even though it might already have been eliminated from the competition. So it might occur that a team holds UEFA Champions- and Euroleague in just one season. The same applies for other attributes as squad (all players that occured in a roster of a team).
+
+Defaults
+Defaulting in terms of 'point in time'
+In case response data is dependant on date sensitive data, the API defaults to now within UTC timezone. So for example in case you just pull the matches resource
+
+curl -XGET 'https://api.football-data.org/v4/matches/' -H "X-Auth-Token: UR_TOKEN"
+you will get all matches that happen today. In case you call a Team Resource you get the squad for the current season.
+
+There are two attributes that matter: current season and current matchday.
+
+Current Matchday
+This one is defined by the following algorithm: assuming now as the current point of time, we take the last and the next match of the season. If their matchday is equal, we set the matchday to that matchday.
+
+If the gap between now and the next match is less that 36 hours or the gap between the last game and now is more than 60 hours, set the matchday to the matchday of the next game.
+
+So during a season the matchday counts up and only up as I also implemented a rule that does not allow a matchday to switch back (which could happen while catch-up matches are taking place out of order).
+
+Current season
+The current season is not defined programmatically, it’s just the season of a competition with the latest starting date.
+
+Automatic folding
+Since v4 I automatically hide deep information in match list views. I realized lots of users just pull lists to quickly gather scores and are not interested in deeper information. I already had such behaviour implemented in v1 but kicked it in v2 as nobody was using it. Now I reintroduce it to be able to set a smart defaults to save bandwith and speed up requests for the majority.
+
+You can control what information gets into your response by setting the following HTTP request headers on any match list subresource.
+
+HTTP Header-Name
+
+Possible values
+
+Description
+
+X-Unfold-Lineups
+
+[ true | false ]
+
+Unfold lineups within the reponse or not
+
+X-Unfold-Bookings
+
+[ true | false ]
+
+Unfold bookings within the reponse or not
+
+X-Unfold-Subs
+
+[ true | false ]
+
+Unfold substitutions within the reponse or not
+
+X-Unfold-Goals
+
+[ true | false ]
+
+Unfold goals within the reponse or not
+
+Lookup Tables
+Quick access to information that you’ll love. Because I know it’s super convenient to find all possible values for a given something of an external system, below you can find all enum types used in my backend and exposed via API. I also provide aggregated lists of stuff you likely already came across in other parts of the documentation.
+
+Enum-Types
+Because I know it’s super convenient to find all possible values for a given something of an external system, below you can find all enum types used in my backend and exposed via API.
+
+Table 1. Enum-Types
+Resource	Attribute	Possible values
+Competition
+
+type
+
+LEAGUE | LEAGUE_CUP | CUP | PLAYOFFS
+
+Team
+
+type
+
+CLUB | NATIONAL
+
+Match
+
+status
+
+SCHEDULED | TIMED | IN_PLAY | PAUSED | EXTRA_TIME | PENALTY_SHOOTOUT | FINISHED | SUSPENDED | POSTPONED | CANCELLED | AWARDED
+
+Match
+
+stage
+
+FINAL | THIRD_PLACE | SEMI_FINALS | QUARTER_FINALS | LAST_16 | LAST_32 | LAST_64 | ROUND_4 | ROUND_3 | ROUND_2 | ROUND_1 | GROUP_STAGE | PRELIMINARY_ROUND | QUALIFICATION | QUALIFICATION_ROUND_1 | QUALIFICATION_ROUND_2 | QUALIFICATION_ROUND_3 | PLAYOFF_ROUND_1 | PLAYOFF_ROUND_2 | PLAYOFFS | REGULAR_SEASON | CLAUSURA | APERTURA | CHAMPIONSHIP | RELEGATION | RELEGATION_ROUND
+
+Match
+
+group
+
+GROUP_A | GROUP_B | GROUP_C | GROUP_D | GROUP_E | GROUP_F | GROUP_G | GROUP_H | GROUP_I | GROUP_J | GROUP_K | GROUP_L
+
+Penalty
+
+type
+
+MATCH | SHOOTOUT
+
+Score
+
+duration
+
+REGULAR | EXTRA_TIME | PENALTY_SHOOTOUT
+
+Card
+
+type
+
+YELLOW | YELLOW_RED | RED
+
+Goal
+
+type
+
+REGULAR | OWN | PENALTY
+
+Person with type REF
+
+role
+
+REFEREE | ASSISTANT_REFEREE_N1 | ASSISTANT_REFEREE_N2 | ASSISTANT_REFEREE_N3 | FOURTH_OFFICIAL | VIDEO_ASSISTANT_REFEREE_N1 | VIDEO_ASSISTANT_REFEREE_N2 | VIDEO_ASSISTANT_REFEREE_N3
+
+Request Headers
+Header-Name	Possible values	Description
+X-Auth-Token
+
+[a-z1-9]+
+
+Your authentication token
+
+X-Unfold-Lineups
+
+[ true | false ]
+
+Unfold lineups within the reponse or not
+
+X-Unfold-Bookings
+
+[ true | false ]
+
+Unfold bookings within the reponse or not
+
+X-Unfold-Subs
+
+[ true | false ]
+
+Unfold substitutions within the reponse or not
+
+X-Unfold-Goals
+
+[ true | false ]
+
+Unfold goals within the reponse or not
+
+Response Headers
+Examine the underneath HTTP response headers to debug responses that do not look like you expected.
+
+Header-Name	Example value	Description
+X-API-Version
+
+v4
+
+indicates the version you are using
+
+X-Authenticated-Client
+
+Jimbo Jones
+
+Shows the detected API-client or 'anonymous'
+
+X-RequestCounter-Reset
+
+23
+
+Defines the seconds left to reset your request counter.
+
+X-RequestsAvailable
+
+21
+
+Shows the remaining requests before being blocked.
+
+Filters
+Filter	Possible value(s)	Description
+id
+
+Integer /[0-9]+/
+
+The (unique) id of a resource.
+
+matchday
+
+Integer /[1-4]*[0-9]*/
+
+Drill down on a matchday; defaults to null
+
+areas
+
+comma separated string
+/\d+,\d+/
+
+Drill down on areas; defaults to null ⇒ all
+
+season
+
+String /\d\d\d\d/
+
+Defaults to the starting year of the current season, given as 4 digit like '2022'
+
+venue
+
+HOME|AWAY
+
+Define the venue of the matches to be returned.
+
+competitions
+
+comma separated string
+/\d+,\d+/
+
+A list of, comma separated competition-code(s) for drill down.
+
+date
+
+A date in format yyyy-MM-dd
+
+Drill down on a given date
+
+dateFrom
+
+A date in format yyyy-MM-dd
+
+Use in conjunction with dateTo
+
+dateTo
+
+A date in format yyyy-MM-dd
+
+Drill down on a given date range
+
+status
+
+Enum, see above
+
+Drill down on a (comma separated list of) status
+
+lineup
+
+STARTING | BENCH
+
+Lets you define the starting type of a player
+
+e
+
+GOAL | ASSIST | SUB_IN | SUB_OUT
+
+Lets you define an event
+
+limit
+
+Integer [1-500]
+
+Limit the result set
+
+offset
+
+Integer [1-500]
+
+Use an offset with a limit to traverse a huge list
+
+League-Codes
+I once added codes to all competitions so I did not need to remember the id any more. You’re welcome to make use of them as well, you can use them anywhere where you’d want to use the id.
+
+Table 2. League-Codes used in the Competition resource
+Competition Id	League-Code	Caption	Country/Continent
+2006
+
+QCAF
+
+WC Qualification CAF
+
+Africa
+
+2024
+
+ASL
+
+Liga Profesional
+
+Argentina
+
+2147
+
+QAFC
+
+WC Qualification AFC
+
+Asia
+
+2008
+
+AAL
+
+A League
+
+Australia
+
+2022
+
+APL
+
+Playoffs 1/2
+
+Austria
+
+2012
+
+ABL
+
+Bundesliga
+
+Austria
+
+2032
+
+BJPP
+
+Playoffs
+
+Belgium
+
+2009
+
+BJL
+
+Jupiler Pro League
+
+Belgium
+
+2029
+
+BSB
+
+Campeonato Brasileiro Série B
+
+Brazil
+
+2013
+
+BSA
+
+Campeonato Brasileiro Série A
+
+Brazil
+
+2048
+
+CPD
+
+Primera División
+
+Chile
+
+2044
+
+CSL
+
+Chinese Super League
+
+China PR
+
+2045
+
+CLP
+
+Liga Postobón
+
+Colombia
+
+2047
+
+PRVA
+
+Prva Liga
+
+Croatia
+
+2141
+
+DELP
+
+Euro League - Playoff
+
+Denmark
+
+2050
+
+DSU
+
+Superliga
+
+Denmark
+
+2016
+
+ELC
+
+Championship
+
+England
+
+2021
+
+PL
+
+Premier League
+
+England
+
+2139
+
+FLC
+
+Football League Cup
+
+England
+
+2030
+
+EL1
+
+League One
+
+England
+
+2053
+
+ENL
+
+National League
+
+England
+
+2054
+
+EL2
+
+League Two
+
+England
+
+2055
+
+FAC
+
+FA Cup
+
+England
+
+2056
+
+COM
+
+FA Community Shield
+
+England
+
+2018
+
+EC
+
+European Championship
+
+Europe
+
+2146
+
+EL
+
+UEFA Europa League
+
+Europe
+
+2154
+
+UCL
+
+UEFA Conference League
+
+Europe
+
+2001
+
+CL
+
+UEFA Champions League
+
+Europe
+
+2157
+
+ESC
+
+Supercup
+
+Europe
+
+2007
+
+QUFA
+
+WC Qualification UEFA
+
+Europe
+
+2031
+
+VEI
+
+Veikkausliiga
+
+Finland
+
+2142
+
+FL2
+
+Ligue 2
+
+France
+
+2143
+
+FPL
+
+Playoffs 1/2
+
+France
+
+2015
+
+FL1
+
+Ligue 1
+
+France
+
+2129
+
+REG
+
+Regionalliga
+
+Germany
+
+2134
+
+GSC
+
+DFL Super Cup
+
+Germany
+
+2140
+
+BL3
+
+3. Bundesliga
+
+Germany
+
+2156
+
+BLREL
+
+Relegation
+
+Germany
+
+2002
+
+BL1
+
+Bundesliga
+
+Germany
+
+2004
+
+BL2
+
+2. Bundesliga
+
+Germany
+
+2011
+
+DFB
+
+DFB-Pokal
+
+Germany
+
+2132
+
+GSL
+
+Super League
+
+Greece
+
+2128
+
+HNB
+
+NB I
+
+Hungary
+
+2125
+
+ILH
+
+Ligat ha’Al
+
+Israel
+
+2019
+
+SA
+
+Serie A
+
+Italy
+
+2121
+
+SB
+
+Serie B
+
+Italy
+
+2122
+
+CIT
+
+Coppa Italia
+
+Italy
+
+2123
+
+ISC
+
+Serie C
+
+Italy
+
+2158
+
+IPL
+
+Playoffs 1/2
+
+Italy
+
+2119
+
+JJL
+
+J. League
+
+Japan
+
+2113
+
+LMX
+
+Liga MX
+
+Mexico
+
+2109
+
+KNV
+
+KNVB Beker
+
+Netherlands
+
+2003
+
+DED
+
+Eredivisie
+
+Netherlands
+
+2005
+
+DJL
+
+Eerste Divisie
+
+Netherlands
+
+2106
+
+TIP
+
+Tippeligaen
+
+Norway
+
+2103
+
+QOFC
+
+WC Qualification OFC
+
+Oceania
+
+2101
+
+PPD
+
+Primera División
+
+Peru
+
+2017
+
+PPL
+
+Primeira Liga
+
+Portugal
+
+2094
+
+RL1
+
+Liga I
+
+Romania
+
+2137
+
+RFPL
+
+RFPL
+
+Russia
+
+2084
+
+SPL
+
+Premier League
+
+Scotland
+
+2152
+
+CLI
+
+Copa Libertadores
+
+South America
+
+2080
+
+CA
+
+Copa America
+
+South America
+
+2082
+
+QCBL
+
+WC Qualification CONMEBOL
+
+South America
+
+2077
+
+SD
+
+Segunda División
+
+Spain
+
+2079
+
+CDR
+
+Copa del Rey
+
+Spain
+
+2014
+
+PD
+
+Primera Division
+
+Spain
+
+2073
+
+ALL
+
+Allsvenskan
+
+Sweden
+
+2072
+
+SSL
+
+Super League
+
+Switzerland
+
+2070
+
+TSL
+
+Süper Lig
+
+Turkey
+
+2064
+
+UPL
+
+Premier Liha
+
+Ukraine
+
+2145
+
+MLS
+
+MLS
+
+United States
+
+2148
+
+SUCU
+
+Supercopa Uruguaya
+
+Uruguay
+
+2153
+
+OLY
+
+Summer Olympics
+
+World
+
+2000
+
+WC
+
+FIFA World Cup
+
+World
+
+2155
+
+QCCF
+
+WC Qualification CONCACAF
+
+football-data API docu
+Resources
+Subresources
+API Reference Documentation
+Overview
+Resources
+Coding a client
+Sample requests
+Bash
+Java
+Groovy
+PHP
+Python
+Elixir
+API policies
+Lookup Tables
+API Reference Documentation
+Coding a client
+Java
+Contents
+Prerequisites
+Plain request
+Java 11+
+Prerequisites
+You should have a running environment for Java 11 (or later) ready set up. Check your installation by printing the version.
+
+(base) ~ % java -version
+openjdk version "11.0.10" 2021-01-19
+OpenJDK Runtime Environment AdoptOpenJDK (build 11.0.10+9)
+OpenJDK 64-Bit Server VM AdoptOpenJDK (build 11.0.10+9, mixed mode)
+Plain request
+Within Java 11 there (finally) is a pretty plain HttpClient on board, so we can just jump in to the JShell, import the needed classes and fire up our request
+
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.BodyHandlers;
+
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+                                 .uri(URI.create("https://api.football-data.org/v4/competitions"))
+                                 .build();
+
+HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+System.out.println(response.statusCode());
+System.out.println(response.body());
+Adding a header to pass the authentication for other resources to use is easy. Use the code below to add authentication to be able to use a restricted resource:
+
+HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://api.football-data.org/v4/competitions/PL/matches?matchday=28"))
+                            .header("X-Auth-Token", "UR_TOKEN")
+                            .build();
+java
+copy icon
+Copied!
+This page was built using the wonderful Antora project.

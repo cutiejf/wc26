@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Layout Example</title>
+    <link rel="stylesheet" href="book-layout.css">
+    <style>
+        /* Demo styles for the example */
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .demo-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .demo-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .class-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .class-badge {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            color: #666;
+        }
+        
+        .example-page {
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .code-example {
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Layout CSS - Complete Example</h1>
+    <p>This example demonstrates all the classes available in the book layout system.</p>
+
+    <!-- Book Spread Example -->
+    <div class="demo-section">
+        <div class="demo-title">Complete Book Spread Example</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.book-spread</span>
+            <span class="class-badge">.page.left</span>
+            <span class="class-badge">.page.right</span>
+            <span class="class-badge">.page.cover</span>
+            <span class="class-badge">.page-header</span>
+            <span class="class-badge">.page-footer</span>
+            <span class="class-badge">.odd/.even</span>
+        </div>
+
+        <div class="example-page">
+            <!-- Book Spread -->
+            <div class="book-spread">
+                <!-- Left Page (Cover) -->
+                <div class="page left cover">
+                    <div class="image-container">
+                        <img src="cover.png" alt="Book Cover" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                
+                <!-- Right Page (Title Page) -->
+                <div class="page right odd with-header with-footer">
+                    <div class="page-header">
+                        <div>Book Title</div>
+                        <div>Chapter 1</div>
+                    </div>
+                    
+                    <div class="content-area">
+                        <h1 class="title">The Art of Book Design</h1>
+                        <h2 class="subtitle">A Comprehensive Guide</h2>
+                        <p class="body">
+                            This is an example of body text using the <span class="bold">.body</span> class. 
+                            It provides proper line height and spacing for comfortable reading. 
+                            You can use <span class="strong">.strong</span> or <span class="bold">.bold</span> 
+                            for emphasis, and <span class="emphasis">.emphasis</span> for italic text.
+                        </p>
+                        
+                        <div class="spacer-large"></div>
+                        
+                        <h3 class="subtitle">Key Features:</h3>
+                        <ul class="body">
+                            <li>Comprehensive <span class="text-accent">color</span> system</li>
+                            <li>Flexible <span class="text-primary">typography</span> classes</li>
+                            <li>Responsive <span class="text-secondary">layout</span> system</li>
+                            <li>Odd/even page <span class="text-success">support</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="page-footer">
+                        <div class="page-number">Page 2</div>
+                        <div>Book Layout System</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-example">
+<div class="book-spread">
+  <div class="page left cover">
+    <div class="image-container">
+      <img src="cover.png" alt="Book Cover">
+    </div>
+  </div>
+  
+  <div class="page right odd with-header with-footer">
+    <div class="page-header">
+      <div>Book Title</div>
+      <div>Chapter 1</div>
+    </div>
+    
+    <div class="content-area">
+      <h1 class="title">The Art of Book Design</h1>
+      <h2 class="subtitle">A Comprehensive Guide</h2>
+      <p class="body">This is body text...</p>
+    </div>
+    
+    <div class="page-footer">
+      <div class="page-number">Page 2</div>
+      <div>Book Layout System</div>
+    </div>
+  </div>
+</div>
+        </div>
+    </div>
+
+    <!-- Typography Examples -->
+    <div class="demo-section">
+        <div class="demo-title">Typography Classes</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.title</span>
+            <span class="class-badge">.subtitle</span>
+            <span class="class-badge">.body</span>
+            <span class="class-badge">.nums</span>
+            <span class="class-badge">.bold/.strong</span>
+            <span class="class-badge">.emphasis</span>
+            <span class="class-badge">.code/.mono</span>
+        </div>
+
+        <div class="example-page" style="padding: 20px;">
+            <h1 class="title">Main Title (36px, Georgia Bold)</h1>
+            <h2 class="subtitle">Subtitle (24px, Georgia Italic)</h2>
+            <p class="body">
+                Body text (18px, Georgia Regular) with proper line height of 1.6. 
+                This is the standard text for paragraphs and content. 
+                Use <span class="bold">bold</span> or <span class="strong">strong</span> for emphasis, 
+                and <span class="emphasis">emphasis</span> for italic styling.
+            </p>
+            
+            <div class="spacer-medium"></div>
+            
+            <p class="nums">Numbers and Stats (20px, Uppercase)</p>
+            
+            <div class="spacer-medium"></div>
+            
+            <p class="body">
+                Code example: <span class="code">function example() { return true; }</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Color Classes -->
+    <div class="demo-section">
+        <div class="demo-title">Color Classes</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.text-primary</span>
+            <span class="class-badge">.text-secondary</span>
+            <span class="class-badge">.text-accent</span>
+            <span class="class-badge">.text-warning</span>
+            <span class="class-badge">.text-success</span>
+            <span class="class-badge">.text-muted</span>
+            <span class="class-badge">.bg-*</span>
+        </div>
+
+        <div class="example-page" style="padding: 20px;">
+            <p class="body">
+                <span class="text-primary">Primary color text</span> - Used for main content and headings
+            </p>
+            <p class="body">
+                <span class="text-secondary">Secondary color text</span> - Used for subheadings and accents
+            </p>
+            <p class="body">
+                <span class="text-accent">Accent color text</span> - Used for highlights and important elements
+            </p>
+            <p class="body">
+                <span class="text-warning">Warning color text</span> - Used for warnings and alerts
+            </p>
+            <p class="body">
+                <span class="text-success">Success color text</span> - Used for positive feedback
+            </p>
+            <p class="body">
+                <span class="text-muted">Muted color text</span> - Used for secondary information
+            </p>
+            
+            <div class="spacer-large"></div>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <div class="bg-primary" style="padding: 10px; color: white; border-radius: 4px;">Background Primary</div>
+                <div class="bg-secondary" style="padding: 10px; color: white; border-radius: 4px;">Background Secondary</div>
+                <div class="bg-accent" style="padding: 10px; color: white; border-radius: 4px;">Background Accent</div>
+                <div class="bg-warning" style="padding: 10px; color: white; border-radius: 4px;">Background Warning</div>
+                <div class="bg-success" style="padding: 10px; color: white; border-radius: 4px;">Background Success</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Layout Examples -->
+    <div class="demo-section">
+        <div class="demo-title">Page Layout Classes</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.with-header</span>
+            <span class="class-badge">.with-footer</span>
+            <span class="class-badge">.no-header</span>
+            <span class="class-badge">.no-footer</span>
+            <span class="class-badge">.no-header-footer</span>
+            <span class="class-badge">.full-image</span>
+            <span class="class-badge">.padded-image</span>
+        </div>
+
+        <!-- Example 1: Header and Footer -->
+        <h3>With Header and Footer</h3>
+        <div class="example-page">
+            <div class="book-spread">
+                <div class="page left even with-header with-footer">
+                    <div class="page-header">
+                        <div>Left Page</div>
+                        <div>Even Page</div>
+                    </div>
+                    <div class="content-area">
+                        <p class="body">This page has both header and footer. The footer aligns to the right on even pages.</p>
+                    </div>
+                    <div class="page-footer">
+                        <div>Even Page Footer (Right Aligned)</div>
+                        <div class="page-number">Page 4</div>
+                    </div>
+                </div>
+                
+                <div class="page right odd with-header with-footer">
+                    <div class="page-header">
+                        <div>Right Page</div>
+                        <div>Odd Page</div>
+                    </div>
+                    <div class="content-area">
+                        <p class="body">This page has both header and footer. The footer aligns to the left on odd pages.</p>
+                    </div>
+                    <div class="page-footer">
+                        <div class="page-number">Page 5</div>
+                        <div>Odd Page Footer (Left Aligned)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 2: No Header/Footer -->
+        <h3 style="margin-top: 30px;">No Header/Footer (Full Image)</h3>
+        <div class="example-page">
+            <div class="book-spread">
+                <div class="page left no-header-footer full-image">
+                    <div class="image-container">
+                        <img src="back.png" alt="Full Image Left" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                
+                <div class="page right no-header-footer full-image">
+                    <div class="image-container">
+                        <img src="back.png" alt="Full Image Right" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 3: Padded Image with Footer -->
+        <h3 style="margin-top: 30px;">Padded Image with Footer</h3>
+        <div class="example-page">
+            <div class="book-spread">
+                <div class="page left padded-image with-footer">
+                    <div class="content-area">
+                        <div class="image-container" style="height: 60%;">
+                            <img src="back.png" alt="Padded Image" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="spacer-medium"></div>
+                        <p class="body">Image with padding and footer below.</p>
+                    </div>
+                    <div class="page-footer">
+                        <div class="page-number">Page 8</div>
+                        <div>Padded Image Page</div>
+                    </div>
+                </div>
+                
+                <div class="page right padded-image with-header">
+                    <div class="page-header">
+                        <div>Header with Image</div>
+                        <div>Right Page</div>
+                    </div>
+                    <div class="content-area">
+                        <div class="image-container" style="height: 60%;">
+                            <img src="back.png" alt="Padded Image" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="spacer-medium"></div>
+                        <p class="body">Image with padding and header above.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Odd/Even Examples -->
+    <div class="demo-section">
+        <div class="demo-title">Odd/Even Page Classes</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.odd</span>
+            <span class="class-badge">.even</span>
+            <span class="class-badge">Footer alignment</span>
+            <span class="class-badge">Border styling</span>
+        </div>
+
+        <div class="example-page">
+            <div class="book-spread">
+                <div class="page left even with-header with-footer">
+                    <div class="page-header">
+                        <div>Even Page (Left)</div>
+                        <div>Page 6</div>
+                    </div>
+                    <div class="content-area">
+                        <p class="body">Even pages have right border and footer content aligns to the right.</p>
+                    </div>
+                    <div class="page-footer">
+                        <div>Even Footer Content (Right)</div>
+                        <div class="page-number">Page 6</div>
+                    </div>
+                </div>
+                
+                <div class="page right odd with-header with-footer">
+                    <div class="page-header">
+                        <div>Odd Page (Right)</div>
+                        <div>Page 7</div>
+                    </div>
+                    <div class="content-area">
+                        <p class="body">Odd pages have left border and footer content aligns to the left.</p>
+                    </div>
+                    <div class="page-footer">
+                        <div class="page-number">Page 7</div>
+                        <div>Odd Footer Content (Left)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common Layouts -->
+    <div class="demo-section">
+        <div class="demo-title">Common Layout Examples</div>
+        
+        <div class="class-list">
+            <span class="class-badge">.standings</span>
+            <span class="class-badge">.standing-row</span>
+            <span class="class-badge">.scoreboard</span>
+            <span class="class-badge">.score-row</span>
+            <span class="class-badge">.team-block</span>
+        </div>
+
+        <!-- Standings Layout -->
+        <h3>Standings Layout (Left Page)</h3>
+        <div class="example-page" style="height: 400px;">
+            <div class="book-spread">
+                <div class="page left with-header">
+                    <div class="page-header">
+                        <div>League Standings</div>
+                        <div>Updated Daily</div>
+                    </div>
+                    <div class="content-area">
+                        <div class="standings">
+                            <div class="standing-row">
+                                <div class="team-name">Team Alpha</div>
+                                <div class="team-abbrev">ALP</div>
+                                <div class="nums">12-3-1</div>
+                            </div>
+                            <div class="standing-row">
+                                <div class="team-name">Team Beta</div>
+                                <div class="team-abbrev">BET</div>
+                                <div class="nums">10-5-1</div>
+                            </div>
+                            <div class="standing-row">
+                                <div class="team-name">Team Gamma</div>
+                                <div class="team-abbrev">GAM</div>
+                                <div class="nums">8-7-1</div>
+                            </div>
+                            <div class="standing-row">
+                                <div class="team-name">Team Delta</div>
+                                <div class="team-abbrev">DEL</div>
+                                <div class="nums">6-9-1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page right with-header">
+                    <div class="page-header">
+                        <div>Today's Scores</div>
+                        <div>Final Results</div>
+                    </div>
+                    <div class="content-area">
+                        <div class="scoreboard">
+                            <div class="score-row">
+                                <div class="team-block">
+                                    <div class="team-name">Team Alpha</div>
+                                    <div class="score home">4</div>
+                                </div>
+                                <div class="team-block">
+                                    <div class="score away">2</div>
+                                    <div class="team-name">Team Beta</div>
+                                </div>
+                            </div>
+                            <div class="clock">Final Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Responsive Behavior -->
+    <div class="demo-section">
+        <div class="demo-title">Responsive Behavior</div>
+        <p class="body">The book layout automatically scales and adapts to different screen sizes:</p>
+        
+        <ul class="body">
+            <li><strong>Desktop (1024px+):</strong> Full spread with 85% scale</li>
+            <li><strong>Tablet (768px):</strong> 65% scale, spine hidden, vertical layout</li>
+            <li><strong>Mobile (480px):</strong> 55% scale, optimized typography</li>
+        </ul>
+        
+        <div class="code-example">
+/* Responsive scaling in CSS */
+@media (max-width: 1024px) {
+  .book-spread { --spread-scale: 0.85; }
+}
+
+@media (max-width: 768px) {
+  .book-spread { 
+    --spread-scale: 0.65; 
+    width: 100vw; 
+    height: auto; 
+  }
+  .book-spread::after { display: none; } /* Hide spine */
+}
+
+@media (max-width: 480px) {
+  .book-spread { --spread-scale: 0.55; }
+  .title { font-size: 28px; }
+  .subtitle { font-size: 20px; }
+  .body { font-size: 16px; }
+}
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <div class="demo-title">Quick Reference</div>
+        
+        <h3>Page Structure</h3>
+        <div class="code-example">
+<div class="book-spread">
+  <div class="page left [modifiers]">
+    <div class="page-header">Header Content</div>
+    <div class="content-area">Main Content</div>
+    <div class="page-footer">Footer Content</div>
+  </div>
+  <div class="page right [modifiers]">
+    <!-- Right page content -->
+  </div>
+</div>
+        </div>
+
+        <h3>Common Modifiers</h3>
+        <div class="class-list">
+            <span class="class-badge">.cover</span>
+            <span class="class-badge">.back-cover</span>
+            <span class="class-badge">.end</span>
+            <span class="class-badge">.odd</span>
+            <span class="class-badge">.even</span>
+            <span class="class-badge">.with-header</span>
+            <span class="class-badge">.with-footer</span>
+            <span class="class-badge">.no-header</span>
+            <span class="class-badge">.no-footer</span>
+            <span class="class-badge">.no-header-footer</span>
+            <span class="class-badge">.full-image</span>
+            <span class="class-badge">.padded-image</span>
+        </div>
+
+        <h3>Typography Classes</h3>
+        <div class="class-list">
+            <span class="class-badge">.title</span>
+            <span class="class-badge">.subtitle</span>
+            <span class="class-badge">.body</span>
+            <span class="class-badge">.nums</span>
+            <span class="class-badge">.bold/.strong</span>
+            <span class="class-badge">.emphasis</span>
+            <span class="class-badge">.code/.mono</span>
+        </div>
+
+        <h3>Color Classes</h3>
+        <div class="class-list">
+            <span class="class-badge">.text-primary</span>
+            <span class="class-badge">.text-secondary</span>
+            <span class="class-badge">.text-accent</span>
+            <span class="class-badge">.text-warning</span>
+            <span class="class-badge">.text-success</span>
+            <span class="class-badge">.text-muted</span>
+            <span class="class-badge">.bg-*</span>
+        </div>
+    </div>
+
+    <script>
+        // Simple interaction to show page numbers
+        document.addEventListener('DOMContentLoaded', function() {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                const pageNumber = page.querySelector('.page-number');
+                if (pageNumber) {
+                    pageNumber.textContent = `Page ${index + 1}`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
